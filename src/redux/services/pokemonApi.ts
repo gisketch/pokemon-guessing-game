@@ -16,6 +16,8 @@ export const pokemonApi = createApi({
             res.id >= 906
               ? res.sprites.other['official-artwork'].front_default
               : res.sprites.other.home.front_default,
+          //@ts-ignore
+          types: res.types.map((type) => type.type.name),
         }
       },
     }),
