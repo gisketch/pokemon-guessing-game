@@ -39,16 +39,7 @@ const GenerationPicker = () => {
     }
   }
   return (
-    <Box
-      sx={{
-        border: 1,
-        borderColor: '#FFFFFF55',
-        borderRadius: '16px',
-        backdropFilter: 'blur(75px)',
-      }}
-      paddingX={2}
-      paddingY={1}
-    >
+    <>
       <Stack direction="row" alignItems="center">
         <Typography variant="h6" marginBottom={1} marginRight={1}>
           Generations
@@ -95,7 +86,7 @@ const GenerationPicker = () => {
           </ToggleButton>
         ))}
       </ToggleButtonGroup>
-    </Box>
+    </>
   )
 }
 

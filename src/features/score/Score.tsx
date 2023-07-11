@@ -17,17 +17,7 @@ const Score = () => {
   }
 
   return (
-    <Box
-      sx={{
-        border: 1,
-        borderColor: '#FFFFFF55',
-        borderRadius: '16px',
-        backdropFilter: 'blur(75px)',
-      }}
-      paddingX={2}
-      paddingY={1}
-      height="100%"
-    >
+    <>
       <Typography variant="h6">Score</Typography>
       <Typography variant="body1">{score.score}</Typography>
       <Typography variant="h6">Streak</Typography>
@@ -36,7 +26,7 @@ const Score = () => {
       <Button variant="outlined" color="secondary" onClick={resetGame}>
         Reset
       </Button>
-    </Box>
+    </>
   )
 }
 
