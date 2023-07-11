@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { resetAll, selectScore } from './scoreSlice'
 import { setRandomId } from '../pokemon/pokemonIdsSlice'
 import { clearPokemon } from '../pokemon/pokemonSlice'
+import { clearGuess } from '../guess/guessSlice'
 
 const Score = () => {
   const score = useAppSelector(selectScore)
@@ -12,6 +13,7 @@ const Score = () => {
     dispatch(setRandomId())
     dispatch(clearPokemon())
     dispatch(resetAll())
+    dispatch(clearGuess())
   }
 
   return (

@@ -12,16 +12,22 @@ import {
   addScore,
 } from '../score/scoreSlice'
 import { motion, useAnimationControls } from 'framer-motion'
+import {
+  addCurrentGuess,
+  backspaceGuess,
+  clearGuess,
+  selectGuess,
+} from '../guess/guessSlice'
 
 const RandomPokemon = () => {
-  const randomId = useAppSelector(selectPokemonIds).currentId
+  const dispatch = useAppDispatch()
 
-  const [guess, setGuess] = useState('')
+  const randomId = useAppSelector(selectPokemonIds).currentId
+  const currentGuess = useAppSelector(selectGuess)
+
   const { data, error, isLoading } = useGetPokemonByIdQuery(randomId)
 
   const currentPokemon = useAppSelector(selectPokemon)
-
-  const dispatch = useAppDispatch()
 
   const changePokemon = () => {
     dispatch(setRandomId())
@@ -44,7 +50,7 @@ const RandomPokemon = () => {
       //@ts-ignore
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [guess, currentPokemon.name])
+  }, [currentGuess, currentPokemon.name])
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
@@ -53,6 +59,7 @@ const RandomPokemon = () => {
         (event.keyCode >= 48 && event.keyCode <= 57) || // Numeric keys (0-9)
         event.keyCode === 32 || // Spacebar
         event.key === 'Backspace' || // Backspace key
+        event.key === 'Delete' || // Delete key
         event.key === "'" || // Apostrophe key
         event.key === '-'
       ) {
@@ -60,10 +67,13 @@ const RandomPokemon = () => {
 
         if (event.key === 'Backspace') {
           // Remove the last character from the guess state
-          setGuess((prevGuess) => prevGuess.slice(0, -1))
+          dispatch(backspaceGuess())
+        } else if (event.key === 'Delete') {
+          // Remove all
+          dispatch(clearGuess())
         } else {
           const pressedKey = event.key
-          setGuess((prevGuess) => prevGuess + pressedKey)
+          dispatch(addCurrentGuess(pressedKey))
         }
       }
     }
@@ -86,10 +96,10 @@ const RandomPokemon = () => {
   useEffect(() => {
     let progress = 0
     const pokemonName = currentPokemon.name
-    const minLength = Math.min(guess.length, pokemonName.length)
+    const minLength = Math.min(currentGuess.length, pokemonName.length)
 
     for (let i = 0; i < minLength; i++) {
-      if (guess[i].toLowerCase() === pokemonName[i].toLowerCase()) {
+      if (currentGuess[i].toLowerCase() === pokemonName[i].toLowerCase()) {
         progress++
       } else {
         break
@@ -97,7 +107,7 @@ const RandomPokemon = () => {
     }
 
     dispatch(setProgress(progress / pokemonName.length))
-  }, [guess])
+  }, [currentGuess])
 
   useEffect(() => {
     if (data) {
@@ -106,7 +116,7 @@ const RandomPokemon = () => {
   }, [data, dispatch])
 
   const handleAnswer = () => {
-    if (guess.toLowerCase() === currentPokemon.name.toLowerCase()) {
+    if (currentGuess.toLowerCase() === currentPokemon.name.toLowerCase()) {
       animControls.start({
         scale: [1, 1.25, 1],
         color: ['rgb(24,150,24)', 'rgb(255,255,255)'],
@@ -119,8 +129,8 @@ const RandomPokemon = () => {
       dispatch(addStreak())
       changePokemon()
       setTimeout(() => {
-        setGuess('')
-      }, 15)
+        dispatch(clearGuess())
+      }, 150)
     } else {
       animControls.start({
         scale: [1, 1.1, 1, 1.1, 1],
@@ -136,7 +146,16 @@ const RandomPokemon = () => {
 
   return (
     <>
-      <Box height="100%" marginBottom={2}>
+      <Box
+        height="100%"
+        marginBottom={2}
+        sx={{
+          userSelect: 'none',
+          msUserSelect: 'none',
+          MozUserSelect: 'none',
+          pointerEvents: 'none',
+        }}
+      >
         <div>{isLoading || error ? <p>Loading...</p> : <PokemonFrame />}</div>
       </Box>
       <motion.div
@@ -150,6 +169,9 @@ const RandomPokemon = () => {
           justifyContent: 'center',
           overflow: 'hidden',
           opacity: 1,
+          userSelect: 'none',
+          msUserSelect: 'none',
+          MozUserSelect: 'none',
         }}
       >
         <Typography
@@ -160,7 +182,7 @@ const RandomPokemon = () => {
           fontSize={45}
           noWrap
         >
-          {guess}
+          {currentGuess}
         </Typography>
         <Typography
           variant="h2"
@@ -172,7 +194,7 @@ const RandomPokemon = () => {
           color="#FFFFFF11"
           noWrap
         >
-          {guess}
+          {currentGuess}
         </Typography>
       </motion.div>
     </>

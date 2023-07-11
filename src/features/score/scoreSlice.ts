@@ -25,12 +25,17 @@ const scoreSlice = createSlice({
       const baseScore = 1_000
       //Window time = 10 seconds
       const timeGuessed = new Date().getTime() - state.startTime
+      const timeWindow = 3
       let timeBonus = 0
-      if (timeGuessed < 3000) {
+      if (timeGuessed < timeWindow * 1000) {
         //If in 3 seconds window, get max bonus
         timeBonus = 1000
       } else {
-        timeBonus = Math.max(0, Math.floor((13_000 - timeGuessed) / 10))
+        timeBonus = Math.max(
+          0,
+          Math.floor((5_000 + timeWindow * 2000 - timeGuessed) / 1000)
+        )
+        timeBonus *= 100
       }
       //Max streak of 5
       const maxStreak = 5

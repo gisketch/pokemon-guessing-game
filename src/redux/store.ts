@@ -5,16 +5,16 @@ import pokemonReducer from '../features/pokemon/pokemonSlice'
 import pokemonIdsReducer from '../features/pokemon/pokemonIdsSlice'
 import generationsReducer from '../features/generations/generationsSlice'
 import scoreReducer from '../features/score/scoreSlice'
-import timerReducer from '../features/timer/timerSlice'
 import gameReducer from '../features/game/gameSlice'
+import guessReducer from '../features/guess/guessSlice'
 
 export const store = configureStore({
   reducer: {
     pokemon: pokemonReducer,
     pokemonIds: pokemonIdsReducer,
     generations: generationsReducer,
+    guess: guessReducer,
     score: scoreReducer,
-    timer: timerReducer,
     game: gameReducer,
     [pokemonApi.reducerPath]: pokemonApi.reducer,
   },
