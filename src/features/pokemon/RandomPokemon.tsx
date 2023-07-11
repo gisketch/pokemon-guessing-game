@@ -24,9 +24,9 @@ const RandomPokemon = () => {
   const dispatch = useAppDispatch()
 
   const changePokemon = () => {
-    dispatch(clearPokemon())
     const randomIndex = Math.floor(Math.random() * pokemonIds.length)
     setRandomId(pokemonIds[randomIndex].toString())
+    dispatch(clearPokemon())
   }
 
   useEffect(() => {

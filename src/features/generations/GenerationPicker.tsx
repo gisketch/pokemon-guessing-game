@@ -1,5 +1,4 @@
 import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
-import { useState } from 'react'
 import gen1 from '../../assets/gen1.png'
 import gen2 from '../../assets/gen2.png'
 import gen3 from '../../assets/gen3.png'
@@ -11,10 +10,7 @@ import gen8 from '../../assets/gen8.png'
 import gen9 from '../../assets/gen9.png'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { selectGenerations, setGenerations } from './generationsSlice'
-import {
-  selectPokemonIds,
-  setPokemonIdsFromGens,
-} from '../pokemon/pokemonIdsSlice'
+import { setPokemonIdsFromGens } from '../pokemon/pokemonIdsSlice'
 
 const generations = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
 

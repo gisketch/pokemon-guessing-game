@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { useAppSelector } from '../../redux/hooks'
 import { selectScore } from './scoreSlice'
 
@@ -16,6 +16,10 @@ const Score = () => {
       <Typography variant="body1">{score.score}</Typography>
       <Typography variant="h6">Streak</Typography>
       <Typography variant="body1">{score.streak}</Typography>
+
+      <Button variant="outlined" color="secondary">
+        Reset
+      </Button>
     </Box>
   )
 }

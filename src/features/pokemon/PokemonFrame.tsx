@@ -40,21 +40,22 @@ const PokemonFrame = () => {
         alignItems: 'center',
       }}
     >
-      <motion.img
-        src={pokeball}
-        height={125}
-        animate={{
-          rotate: [0, 359, 365, 360],
-          transition: {
-            repeat: Infinity,
-          },
-        }}
-        style={{
-          display: pokemon.name === '' ? 'block' : 'none',
-          position: 'absolute',
-          zIndex: 5,
-        }}
-      />
+      {pokemon.name === '' ? (
+        <motion.img
+          src={pokeball}
+          height={125}
+          animate={{
+            rotate: [0, 359, 365, 360],
+            transition: {
+              repeat: Infinity,
+            },
+          }}
+          style={{
+            position: 'absolute',
+            zIndex: 5,
+          }}
+        />
+      ) : null}
 
       <img
         src={pokemonImage}
