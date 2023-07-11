@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { useGetPokemonByIdQuery } from '../../redux/services/pokemonApi'
 import { KeyboardEvent, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
@@ -11,6 +11,7 @@ import {
   setProgress,
   addScore,
 } from '../score/scoreSlice'
+import { motion, useAnimationControls } from 'framer-motion'
 
 const RandomPokemon = () => {
   const randomId = useAppSelector(selectPokemonIds).currentId
@@ -26,6 +27,8 @@ const RandomPokemon = () => {
     dispatch(setRandomId())
     dispatch(clearPokemon())
   }
+
+  const animControls = useAnimationControls()
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -47,6 +50,7 @@ const RandomPokemon = () => {
     function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
       if (
         (event.keyCode >= 65 && event.keyCode <= 90) || // Alphabet keys (A-Z)
+        (event.keyCode >= 48 && event.keyCode <= 57) || // Numeric keys (0-9)
         event.keyCode === 32 || // Spacebar
         event.key === 'Backspace' || // Backspace key
         event.key === "'" || // Apostrophe key
@@ -103,14 +107,31 @@ const RandomPokemon = () => {
 
   const handleAnswer = () => {
     if (guess.toLowerCase() === currentPokemon.name.toLowerCase()) {
-      dispatch(addScore(100))
+      animControls.start({
+        scale: [1, 1.25, 1],
+        color: ['rgb(24,150,24)', 'rgb(255,255,255)'],
+        transition: {
+          duration: 0.15,
+        },
+      })
+      dispatch(addScore())
       dispatch(setProgress(0))
       dispatch(addStreak())
       changePokemon()
+      setTimeout(() => {
+        setGuess('')
+      }, 15)
     } else {
+      animControls.start({
+        scale: [1, 1.1, 1, 1.1, 1],
+        rotate: [0, 5, 0, -5, 0],
+        color: ['rgb(127,24,24)', 'rgb(255,255,255)'],
+        transition: {
+          duration: 0.3,
+        },
+      })
       dispatch(resetStreak())
     }
-    setGuess('')
   }
 
   return (
@@ -118,21 +139,24 @@ const RandomPokemon = () => {
       <Box height="100%" marginBottom={2}>
         <div>{isLoading || error ? <p>Loading...</p> : <PokemonFrame />}</div>
       </Box>
-      <Stack
-        maxWidth="100vw"
-        overflow="hidden"
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-        sx={{
+      <motion.div
+        animate={animControls}
+        style={{
           position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          maxWidth: '100vw',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
+          opacity: 1,
         }}
       >
         <Typography
           variant="h4"
           position="absolute"
           textAlign="center"
-          fontWeight={800}
+          fontWeight={600}
           fontSize={45}
           noWrap
         >
@@ -145,12 +169,12 @@ const RandomPokemon = () => {
           textAlign="center"
           fontWeight={800}
           fontSize={100}
-          color="#FFFFFF22"
+          color="#FFFFFF11"
           noWrap
         >
           {guess}
         </Typography>
-      </Stack>
+      </motion.div>
     </>
   )
 }

@@ -4,9 +4,10 @@ import { RootState } from '../../redux/store'
 type SliceState = {
   startTime: number
   endTime: number
+  timeBonus: number
 }
 
-const initialState: SliceState = { startTime: 0, endTime: 0 }
+const initialState: SliceState = { startTime: 0, endTime: 0, timeBonus: 0 }
 
 const timerSlice = createSlice({
   name: 'timer',
@@ -18,7 +19,7 @@ const timerSlice = createSlice({
     },
     setEndTime: (state) => {
       const endTime = new Date().getTime()
-      return { ...state, endTime }
+      return { ...state, endTime, timeBonus: endTime - state.startTime }
     },
   },
 })

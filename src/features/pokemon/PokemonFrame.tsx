@@ -1,18 +1,27 @@
 import { useEffect, useRef } from 'react'
-import { useAppSelector } from '../../redux/hooks'
-import { selectScore } from '../score/scoreSlice'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import { selectScore, setStartTime } from '../score/scoreSlice'
 import { selectPokemon } from './pokemonSlice'
 import { motion } from 'framer-motion'
 import pokeball from '../../assets/pokeball3.png'
 
 const PokemonFrame = () => {
+  const dispatch = useAppDispatch()
+
   const pokemon = useAppSelector(selectPokemon)
+
   let progress = useAppSelector(selectScore).progress
   if (Number.isNaN(progress)) progress = 0
   const progressPercent = Math.floor(progress * 100)
 
   const containerRef = useRef<HTMLDivElement>(null)
   const maskRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (pokemon.name !== '') {
+      dispatch(setStartTime())
+    }
+  }, [pokemon.name])
 
   useEffect(() => {
     const containerElement = containerRef.current
