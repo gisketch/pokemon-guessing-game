@@ -82,7 +82,7 @@ const PokemonFrame = () => {
           position: 'absolute',
           zIndex: 2,
           clipPath: 'inset(0px 0px 0px 0px)',
-          transition: 'clip-path 0.2s ease-in-out',
+          transition: 'clip-path 0.05s ease-in-out',
         }}
         //@ts-ignore
         ref={maskRef}

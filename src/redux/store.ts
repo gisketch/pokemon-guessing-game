@@ -5,6 +5,8 @@ import pokemonReducer from '../features/pokemon/pokemonSlice'
 import pokemonIdsReducer from '../features/pokemon/pokemonIdsSlice'
 import generationsReducer from '../features/generations/generationsSlice'
 import scoreReducer from '../features/score/scoreSlice'
+import timerReducer from '../features/timer/timerSlice'
+import gameReducer from '../features/game/gameSlice'
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ export const store = configureStore({
     pokemonIds: pokemonIdsReducer,
     generations: generationsReducer,
     score: scoreReducer,
+    timer: timerReducer,
+    game: gameReducer,
     [pokemonApi.reducerPath]: pokemonApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

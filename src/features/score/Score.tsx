@@ -1,13 +1,27 @@
 import { Box, Button, Typography } from '@mui/material'
-import { useAppSelector } from '../../redux/hooks'
-import { selectScore } from './scoreSlice'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import { resetAll, selectScore } from './scoreSlice'
+import { setRandomId } from '../pokemon/pokemonIdsSlice'
+import { clearPokemon } from '../pokemon/pokemonSlice'
 
 const Score = () => {
   const score = useAppSelector(selectScore)
+  const dispatch = useAppDispatch()
+
+  const resetGame = () => {
+    dispatch(setRandomId())
+    dispatch(clearPokemon())
+    dispatch(resetAll())
+  }
 
   return (
     <Box
-      sx={{ border: 1, borderColor: '#FFFFFF55', borderRadius: '16px' }}
+      sx={{
+        border: 1,
+        borderColor: '#FFFFFF55',
+        borderRadius: '16px',
+        backdropFilter: 'blur(75px)',
+      }}
       paddingX={2}
       paddingY={1}
       height="100%"
@@ -17,7 +31,7 @@ const Score = () => {
       <Typography variant="h6">Streak</Typography>
       <Typography variant="body1">{score.streak}</Typography>
 
-      <Button variant="outlined" color="secondary">
+      <Button variant="outlined" color="secondary" onClick={resetGame}>
         Reset
       </Button>
     </Box>

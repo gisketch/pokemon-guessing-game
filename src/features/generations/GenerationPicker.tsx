@@ -1,4 +1,11 @@
-import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
+import {
+  Box,
+  Stack,
+  ToggleButton,
+  ToggleButtonGroup,
+  Tooltip,
+  Typography,
+} from '@mui/material'
 import gen1 from '../../assets/gen1.png'
 import gen2 from '../../assets/gen2.png'
 import gen3 from '../../assets/gen3.png'
@@ -11,6 +18,7 @@ import gen9 from '../../assets/gen9.png'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { selectGenerations, setGenerations } from './generationsSlice'
 import { setPokemonIdsFromGens } from '../pokemon/pokemonIdsSlice'
+import { InfoOutlined } from '@mui/icons-material'
 
 const generations = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
 
@@ -32,13 +40,25 @@ const GenerationPicker = () => {
   }
   return (
     <Box
-      sx={{ border: 1, borderColor: '#FFFFFF55', borderRadius: '16px' }}
+      sx={{
+        border: 1,
+        borderColor: '#FFFFFF55',
+        borderRadius: '16px',
+        backdropFilter: 'blur(75px)',
+      }}
       paddingX={2}
       paddingY={1}
     >
-      <Typography variant="h6" marginBottom={1}>
-        Generations
-      </Typography>
+      <Stack direction="row" alignItems="center">
+        <Typography variant="h6" marginBottom={1} marginRight={1}>
+          Generations
+        </Typography>
+        <Box>
+          <Tooltip arrow title="Takes effect on next pokemon">
+            <InfoOutlined opacity={0.8} />
+          </Tooltip>
+        </Box>
+      </Stack>
 
       <ToggleButtonGroup
         orientation="vertical"

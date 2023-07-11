@@ -11,11 +11,12 @@ const gen7 = Array.from({ length: 86 }, (_, index) => (index + 722).toString())
 const gen8 = Array.from({ length: 96 }, (_, index) => (index + 810).toString())
 const gen9 = Array.from({ length: 105 }, (_, index) => (index + 906).toString())
 
-type SliceState = string[]
+type SliceState = { currentId: string; pokemonIds: string[] }
 
-const initialState: SliceState = Array.from({ length: 386 }, (_, index) =>
-  (index + 1).toString()
-)
+const initialState: SliceState = {
+  currentId: '1',
+  pokemonIds: Array.from({ length: 386 }, (_, index) => (index + 1).toString()),
+}
 
 const pokemonIdsSlice = createSlice({
   name: 'pokemonIds',
@@ -47,12 +48,23 @@ const pokemonIdsSlice = createSlice({
             return []
         }
       })
-      return [...selectedGenIds]
+      return {
+        ...state,
+        pokemonIds: [...selectedGenIds],
+      }
+    },
+    setRandomId: (state) => {
+      const randomIndex = Math.floor(Math.random() * state.pokemonIds.length)
+      const newId = state.pokemonIds[randomIndex].toString()
+      return {
+        ...state,
+        currentId: newId,
+      }
     },
   },
 })
 
-export const { setPokemonIdsFromGens } = pokemonIdsSlice.actions
+export const { setPokemonIdsFromGens, setRandomId } = pokemonIdsSlice.actions
 
 export const selectPokemonIds = (state: RootState) => state.pokemonIds
 

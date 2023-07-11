@@ -17,7 +17,7 @@ const scoreSlice = createSlice({
   name: 'score',
   initialState,
   reducers: {
-    setScore: (state, action: PayloadAction<number>) => {
+    addScore: (state, action: PayloadAction<number>) => {
       const scoreToAdd = action.payload
       state.score += scoreToAdd
     },
@@ -30,10 +30,13 @@ const scoreSlice = createSlice({
     resetStreak: (state) => {
       state.streak = 0
     },
+    resetAll: (state) => {
+      return initialState
+    },
   },
 })
 
-export const { setScore, setProgress, addStreak, resetStreak } =
+export const { addScore, setProgress, addStreak, resetStreak, resetAll } =
   scoreSlice.actions
 
 export const selectScore = (state: RootState) => state.score
