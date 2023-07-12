@@ -4,6 +4,7 @@ import Score from '../features/score/Score'
 import PokemonGuess from './PokemonGuess'
 import GamePanel from './GamePanel'
 import GameSettings from '../features/game/GameSettings'
+import HealthPoints from '../features/score/HealthPoints'
 
 const GameContainer = () => {
   return (
@@ -18,6 +19,7 @@ const GameContainer = () => {
       </Grid>
       <Grid item xs={3}>
         <GamePanel>
+          <HealthPoints />
           <Score />
           <GameSettings />
         </GamePanel>

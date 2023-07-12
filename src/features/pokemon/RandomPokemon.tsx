@@ -10,6 +10,7 @@ import {
   addStreak,
   setProgress,
   addScore,
+  decrementHp,
 } from '../score/scoreSlice'
 import { motion, useAnimationControls } from 'framer-motion'
 import {
@@ -159,6 +160,7 @@ const RandomPokemon = () => {
           duration: 0.3,
         },
       })
+      dispatch(decrementHp())
       dispatch(resetStreak())
     }
   }

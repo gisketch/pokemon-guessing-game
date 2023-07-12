@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../../redux/store'
 
 type SliceState = {
+  hp: number
   score: number
   streak: number
   progress: number
@@ -20,6 +21,7 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
+  hp: 6,
   score: 0,
   streak: 0,
   progress: 0,
@@ -89,6 +91,9 @@ const scoreSlice = createSlice({
     setStartTime: (state) => {
       state.startTime = new Date().getTime()
     },
+    decrementHp: (state) => {
+      state.hp--
+    },
   },
 })
 
@@ -99,6 +104,7 @@ export const {
   resetStreak,
   resetAll,
   setStartTime,
+  decrementHp,
 } = scoreSlice.actions
 
 export const selectScore = (state: RootState) => state.score
