@@ -16,7 +16,7 @@ import {
 import getRandomInteger from '../../utils/getRandomInteger'
 import { guessPokemon, initializeGame } from '../../utils/gameActions'
 
-const RandomPokemon = () => {
+const PokemonContainer = () => {
   const dispatch = useAppDispatch()
 
   const randomId = useAppSelector(selectPokemonIds).currentId
@@ -44,7 +44,8 @@ const RandomPokemon = () => {
         event.key === 'Backspace' || // Backspace key
         event.key === 'Delete' || // Delete key
         event.key === "'" || // Apostrophe key
-        event.key === '-'
+        event.key === '-' || // Hyphen
+        event.key === '.' //Period
       ) {
         event.preventDefault()
 
@@ -178,4 +179,4 @@ const RandomPokemon = () => {
   )
 }
 
-export default RandomPokemon
+export default PokemonContainer

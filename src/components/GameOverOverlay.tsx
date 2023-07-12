@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
@@ -21,7 +20,7 @@ const GameOverOverlay = () => {
   return (
     <>
       <Dialog
-        open={score.hp === 0}
+        open={score.hp <= 0}
         // onClose={(handleClose)}
       >
         <DialogTitle sx={{ background: 'black' }}>Game over</DialogTitle>

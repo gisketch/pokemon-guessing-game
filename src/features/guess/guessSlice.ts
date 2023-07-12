@@ -10,7 +10,7 @@ const guessSlice = createSlice({
   initialState,
   reducers: {
     addCurrentGuess: (state, action: PayloadAction<string>) => {
-      return state + action.payload
+      return (state + action.payload).replace('  ', ' ')
     },
     backspaceGuess: (state) => {
       return state.slice(0, -1)

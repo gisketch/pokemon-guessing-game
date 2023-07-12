@@ -1,11 +1,11 @@
 import { Box, Stack } from '@mui/material'
-import RandomPokemon from '../features/pokemon/RandomPokemon'
+import PokemonContainer from '../features/pokemon/PokemonContainer'
 
 const PokemonGuess = () => {
   return (
     <Box height="100%" padding={2}>
       <Stack direction="column" alignItems="center" justifyItems="center">
-        <RandomPokemon />
+        <PokemonContainer />
       </Stack>
     </Box>
   )

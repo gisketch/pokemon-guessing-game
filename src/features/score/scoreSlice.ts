@@ -91,7 +91,11 @@ const scoreSlice = createSlice({
       state.streak = 0
     },
     resetAll: (state, action: PayloadAction<'easy' | 'medium' | 'hard'>) => {
-      return { ...initialState, difficulty: action.payload }
+      return {
+        ...initialState,
+        difficulty: action.payload,
+        startTime: new Date().getTime(),
+      }
     },
     setStartTime: (state) => {
       state.startTime = new Date().getTime()
