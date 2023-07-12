@@ -25,7 +25,7 @@ const Timer = () => {
         if (timeRemaining <= 0) {
           clearInterval(intervalId)
           setRemainingTime(0)
-          skipPokemon(dispatch)
+          if (hp > 0) skipPokemon(dispatch)
         } else {
           setRemainingTime(timeRemaining)
         }
