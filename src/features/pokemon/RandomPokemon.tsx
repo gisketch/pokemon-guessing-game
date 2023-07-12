@@ -18,6 +18,7 @@ import {
   clearGuess,
   selectGuess,
 } from '../guess/guessSlice'
+import getRandomInteger from '../../utils/getRandomInteger'
 
 const RandomPokemon = () => {
   const dispatch = useAppDispatch()
@@ -35,6 +36,7 @@ const RandomPokemon = () => {
   }
 
   const animControls = useAnimationControls()
+  const pokeFrameControls = useAnimationControls()
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -106,6 +108,15 @@ const RandomPokemon = () => {
       }
     }
 
+    //Animate
+    pokeFrameControls.start({
+      x: [0, getRandomInteger(-2, 2), 0],
+      y: [0, getRandomInteger(-2, 2), 0],
+      transition: {
+        duration: 0.2,
+      },
+    })
+
     dispatch(setProgress(progress / pokemonName.length))
   }, [currentGuess])
 
@@ -132,6 +143,14 @@ const RandomPokemon = () => {
         dispatch(clearGuess())
       }, 150)
     } else {
+      //Animate
+      pokeFrameControls.start({
+        x: [0, getRandomInteger(-10, 10), 0],
+        y: [0, getRandomInteger(-10, 10), 0],
+        transition: {
+          duration: 0.2,
+        },
+      })
       animControls.start({
         scale: [1, 1.1, 1, 1.1, 1],
         rotate: [0, 5, 0, -5, 0],
@@ -156,7 +175,9 @@ const RandomPokemon = () => {
           pointerEvents: 'none',
         }}
       >
-        <div>{isLoading || error ? <p>Loading...</p> : <PokemonFrame />}</div>
+        <motion.div animate={pokeFrameControls}>
+          {isLoading || error ? <p>Loading...</p> : <PokemonFrame />}
+        </motion.div>
       </Box>
       <motion.div
         animate={animControls}

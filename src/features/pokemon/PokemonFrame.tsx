@@ -80,7 +80,7 @@ const PokemonFrame = () => {
         src={pokemonImage}
         height={300}
         animate={{
-          scale: progress === 1 ? [1, 1.025, 1] : 1,
+          scale: progress === 1 ? [1.05, 1.1, 1.05] : 1,
           transition: {
             duration: 0.5,
             repeat: progress === 1 ? Infinity : 0,

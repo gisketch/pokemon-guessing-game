@@ -67,6 +67,7 @@ const GenerationPicker = () => {
             aria-label={gen}
             size="small"
             sx={{ height: '48px' }}
+            onKeyDown={(e) => e.preventDefault()}
           >
             <Typography
               variant="body1"

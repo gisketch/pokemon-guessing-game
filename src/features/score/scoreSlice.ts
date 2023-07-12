@@ -7,6 +7,16 @@ type SliceState = {
   progress: number
   startTime: number
   timeBonus: number
+  timeGuessed: number
+  scoring: {
+    base: number
+    time: number
+    streak: number
+  }
+  max: {
+    timeGuessed: number
+    streak: number
+  }
 }
 
 const initialState: SliceState = {
@@ -15,6 +25,16 @@ const initialState: SliceState = {
   progress: 0,
   startTime: 0,
   timeBonus: 0,
+  timeGuessed: 0,
+  scoring: {
+    base: 1_000,
+    time: 0,
+    streak: 0,
+  },
+  max: {
+    timeGuessed: Infinity,
+    streak: 0,
+  },
 }
 
 const scoreSlice = createSlice({
@@ -22,18 +42,17 @@ const scoreSlice = createSlice({
   initialState,
   reducers: {
     addScore: (state) => {
-      const baseScore = 1_000
       //Window time = 10 seconds
-      const timeGuessed = new Date().getTime() - state.startTime
+      state.timeGuessed = new Date().getTime() - state.startTime
       const timeWindow = 3
       let timeBonus = 0
-      if (timeGuessed < timeWindow * 1000) {
+      if (state.timeGuessed < timeWindow * 1000) {
         //If in 3 seconds window, get max bonus
         timeBonus = 1000
       } else {
         timeBonus = Math.max(
           0,
-          Math.floor((5_000 + timeWindow * 2000 - timeGuessed) / 1000)
+          Math.floor((5_000 + timeWindow * 2000 - state.timeGuessed) / 1000)
         )
         timeBonus *= 100
       }
@@ -45,15 +64,21 @@ const scoreSlice = createSlice({
       } else {
         streakBonus = maxStreak * 100
       }
-      console.log(timeBonus, 'time')
-      console.log(streakBonus, 'streak')
-      state.score += baseScore + timeBonus + streakBonus
+
+      // Update max values
+      state.max.timeGuessed = Math.min(state.max.timeGuessed, state.timeGuessed)
+
+      state.scoring.time = timeBonus
+      state.scoring.streak = streakBonus
+      state.score += state.scoring.base + timeBonus + streakBonus
     },
     setProgress: (state, action: PayloadAction<number>) => {
       state.progress = action.payload
     },
     addStreak: (state) => {
       state.streak++
+      // Update max values
+      state.max.streak = Math.max(state.max.streak, state.streak)
     },
     resetStreak: (state) => {
       state.streak = 0
