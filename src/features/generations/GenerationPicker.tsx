@@ -1,9 +1,7 @@
 import {
-  Box,
   Stack,
   ToggleButton,
   ToggleButtonGroup,
-  Tooltip,
   Typography,
 } from '@mui/material'
 import gen1 from '../../assets/gen1.png'

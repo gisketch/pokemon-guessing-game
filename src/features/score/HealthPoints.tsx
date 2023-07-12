@@ -4,7 +4,6 @@ import { selectScore } from './scoreSlice'
 import pokeball from '../../assets/pokeballPixel.png'
 import { AnimatePresence, motion } from 'framer-motion'
 import getRandomInteger from '../../utils/getRandomInteger'
-import { render } from 'react-dom'
 
 const HealthPoints = () => {
   const hp = useAppSelector(selectScore).hp
