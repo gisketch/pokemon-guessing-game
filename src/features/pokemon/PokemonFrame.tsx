@@ -9,6 +9,7 @@ const PokemonFrame = () => {
   const dispatch = useAppDispatch()
 
   const pokemon = useAppSelector(selectPokemon)
+  const currentDifficulty = useAppSelector(selectScore).difficulty
 
   let progress = useAppSelector(selectScore).progress
   if (Number.isNaN(progress)) progress = 0
@@ -65,42 +66,53 @@ const PokemonFrame = () => {
           }}
         />
       ) : null}
+      <motion.div
+        initial={{
+          scale: 1,
+        }}
+        animate={{ scale: 1 }}
+        exit={{ scale: 0 }}
+      >
+        <img
+          src={pokemonImage}
+          height={300}
+          style={{
+            filter: currentDifficulty === 'easy' ? '' : 'brightness(0%)',
+            position: 'absolute',
+            opacity: progress === 1 ? '0' : '1',
+            zIndex: 1,
+          }}
+        />
 
-      <img
-        src={pokemonImage}
-        height={300}
-        style={{
-          filter: 'brightness(0%)',
-          position: 'absolute',
-          opacity: progress === 1 ? '0' : '1',
-          zIndex: 1,
-        }}
-      />
-      <motion.img
-        src={pokemonImage}
-        height={300}
-        animate={{
-          scale: progress === 1 ? [1.05, 1.1, 1.05] : 1,
-          transition: {
-            duration: 0.5,
-            repeat: progress === 1 ? Infinity : 0,
-            repeatType: 'loop',
-          },
-        }}
-        style={{
-          position: 'absolute',
-          zIndex: 2,
-          clipPath: 'inset(0px 0px 0px 0px)',
-          transition: 'clip-path 0.05s ease-in-out',
-        }}
-        //@ts-ignore
-        ref={maskRef}
-      />
-      <motion.img
-        src={pokemonImage}
-        height={300}
-        style={{ filter: 'blur(100px)', zIndex: 0 }}
-      />
+        <motion.img
+          src={pokemonImage}
+          height={300}
+          animate={{
+            scale: progress === 1 ? [1.05, 1.1, 0] : 1,
+            transition: {
+              duration: 0.3,
+              repeat: progress === 1 ? Infinity : 0,
+              repeatType: 'loop',
+            },
+          }}
+          style={{
+            position: 'absolute',
+            display:
+              currentDifficulty === 'hard' && progress !== 1 ? 'none' : 'block',
+            zIndex: 2,
+            clipPath: 'inset(0px 0px 0px 0px)',
+            transition: 'clip-path 0.05s ease-in-out',
+          }}
+          //@ts-ignore
+          ref={maskRef}
+        />
+
+        <motion.img
+          src={pokemonImage}
+          height={300}
+          style={{ filter: 'blur(100px)', zIndex: 0 }}
+        />
+      </motion.div>
     </div>
   )
 }

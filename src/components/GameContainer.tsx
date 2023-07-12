@@ -5,26 +5,30 @@ import PokemonGuess from './PokemonGuess'
 import GamePanel from './GamePanel'
 import GameSettings from '../features/game/GameSettings'
 import HealthPoints from '../features/score/HealthPoints'
+import GameOverOverlay from './GameOverOverlay'
 
 const GameContainer = () => {
   return (
-    <Grid container>
-      <Grid item xs={3}>
-        <GamePanel>
-          <GenerationPicker />
-        </GamePanel>
+    <>
+      <GameOverOverlay />
+      <Grid container>
+        <Grid item xs={3}>
+          <GamePanel>
+            <GenerationPicker />
+          </GamePanel>
+        </Grid>
+        <Grid item xs={6}>
+          <PokemonGuess />
+        </Grid>
+        <Grid item xs={3}>
+          <GamePanel>
+            <HealthPoints />
+            <Score />
+            <GameSettings />
+          </GamePanel>
+        </Grid>
       </Grid>
-      <Grid item xs={6}>
-        <PokemonGuess />
-      </Grid>
-      <Grid item xs={3}>
-        <GamePanel>
-          <HealthPoints />
-          <Score />
-          <GameSettings />
-        </GamePanel>
-      </Grid>
-    </Grid>
+    </>
   )
 }
 

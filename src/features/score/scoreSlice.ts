@@ -3,8 +3,10 @@ import { RootState } from '../../redux/store'
 
 type SliceState = {
   hp: number
+  difficulty: 'easy' | 'medium' | 'hard'
   score: number
   streak: number
+  guesses: number
   progress: number
   startTime: number
   timeBonus: number
@@ -22,8 +24,10 @@ type SliceState = {
 
 const initialState: SliceState = {
   hp: 6,
+  difficulty: 'medium',
   score: 0,
   streak: 0,
+  guesses: 0,
   progress: 0,
   startTime: 0,
   timeBonus: 0,
@@ -70,6 +74,7 @@ const scoreSlice = createSlice({
       // Update max values
       state.max.timeGuessed = Math.min(state.max.timeGuessed, state.timeGuessed)
 
+      state.guesses++
       state.scoring.time = timeBonus
       state.scoring.streak = streakBonus
       state.score += state.scoring.base + timeBonus + streakBonus
@@ -85,8 +90,8 @@ const scoreSlice = createSlice({
     resetStreak: (state) => {
       state.streak = 0
     },
-    resetAll: (state) => {
-      return initialState
+    resetAll: (state, action: PayloadAction<'easy' | 'medium' | 'hard'>) => {
+      return { ...initialState, difficulty: action.payload }
     },
     setStartTime: (state) => {
       state.startTime = new Date().getTime()

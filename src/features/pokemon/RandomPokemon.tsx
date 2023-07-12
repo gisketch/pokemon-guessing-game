@@ -1,17 +1,11 @@
 import { Box, Typography } from '@mui/material'
 import { useGetPokemonByIdQuery } from '../../redux/services/pokemonApi'
-import { KeyboardEvent, useEffect, useState } from 'react'
+import { KeyboardEvent, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { selectPokemonIds, setRandomId } from './pokemonIdsSlice'
+import { selectPokemonIds } from './pokemonIdsSlice'
 import PokemonFrame from './PokemonFrame'
-import { clearPokemon, selectPokemon, setPokemon } from './pokemonSlice'
-import {
-  resetStreak,
-  addStreak,
-  setProgress,
-  addScore,
-  decrementHp,
-} from '../score/scoreSlice'
+import { selectPokemon, setPokemon } from './pokemonSlice'
+import { setProgress } from '../score/scoreSlice'
 import { motion, useAnimationControls } from 'framer-motion'
 import {
   addCurrentGuess,
@@ -20,6 +14,7 @@ import {
   selectGuess,
 } from '../guess/guessSlice'
 import getRandomInteger from '../../utils/getRandomInteger'
+import { guessPokemon, initializeGame } from '../../utils/gameActions'
 
 const RandomPokemon = () => {
   const dispatch = useAppDispatch()
@@ -31,29 +26,14 @@ const RandomPokemon = () => {
 
   const currentPokemon = useAppSelector(selectPokemon)
 
-  const changePokemon = () => {
-    dispatch(setRandomId())
-    dispatch(clearPokemon())
-  }
-
   const animControls = useAnimationControls()
   const pokeFrameControls = useAnimationControls()
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-      if (event.key === 'Enter') {
-        handleAnswer()
-      }
+    if (currentGuess !== '') {
+      handleAnswer()
     }
-
-    //@ts-ignore
-    document.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      //@ts-ignore
-      document.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [currentGuess, currentPokemon.name])
+  }, [currentGuess])
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
@@ -92,8 +72,7 @@ const RandomPokemon = () => {
   }, [])
 
   useEffect(() => {
-    changePokemon()
-    dispatch(setProgress(0))
+    initializeGame(dispatch)
   }, [])
 
   useEffect(() => {
@@ -136,32 +115,7 @@ const RandomPokemon = () => {
           duration: 0.15,
         },
       })
-      dispatch(addScore())
-      dispatch(setProgress(0))
-      dispatch(addStreak())
-      changePokemon()
-      setTimeout(() => {
-        dispatch(clearGuess())
-      }, 150)
-    } else {
-      //Animate
-      pokeFrameControls.start({
-        x: [0, getRandomInteger(-10, 10), 0],
-        y: [0, getRandomInteger(-10, 10), 0],
-        transition: {
-          duration: 0.2,
-        },
-      })
-      animControls.start({
-        scale: [1, 1.1, 1, 1.1, 1],
-        rotate: [0, 5, 0, -5, 0],
-        color: ['rgb(127,24,24)', 'rgb(255,255,255)'],
-        transition: {
-          duration: 0.3,
-        },
-      })
-      dispatch(decrementHp())
-      dispatch(resetStreak())
+      guessPokemon(dispatch)
     }
   }
 

@@ -5,7 +5,7 @@ import pokemonReducer from '../features/pokemon/pokemonSlice'
 import pokemonIdsReducer from '../features/pokemon/pokemonIdsSlice'
 import generationsReducer from '../features/generations/generationsSlice'
 import scoreReducer from '../features/score/scoreSlice'
-import gameReducer from '../features/game/gameSlice'
+import gameQueueReducer from '../features/game/gameQueueSlice'
 import guessReducer from '../features/guess/guessSlice'
 
 export const store = configureStore({
@@ -15,7 +15,7 @@ export const store = configureStore({
     generations: generationsReducer,
     guess: guessReducer,
     score: scoreReducer,
-    game: gameReducer,
+    gameQueue: gameQueueReducer,
     [pokemonApi.reducerPath]: pokemonApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
