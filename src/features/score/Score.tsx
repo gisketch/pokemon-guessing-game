@@ -8,21 +8,14 @@ import ScoreText from './ScoreText'
 import { motion, useAnimationControls } from 'framer-motion'
 import { useEffect } from 'react'
 import getRandomInteger from '../../utils/getRandomInteger'
+import prettyMilliseconds from 'pretty-ms'
 
 const Score = () => {
   const score = useAppSelector(selectScore)
-  const dispatch = useAppDispatch()
 
   const scoreAnim = useAnimationControls()
   const streakAnim = useAnimationControls()
   const timeAnim = useAnimationControls()
-
-  const resetGame = () => {
-    dispatch(setRandomId())
-    dispatch(clearPokemon())
-    dispatch(resetAll())
-    dispatch(clearGuess())
-  }
 
   useEffect(() => {
     if (score.score === 0) return
@@ -106,26 +99,19 @@ const Score = () => {
       </Box>
       <Box marginBottom={1}>
         <Typography variant="h6">Guess Time</Typography>
-        <Typography variant="body1">{score.timeGuessed / 1000} s</Typography>
+        <Typography variant="body1">
+          {prettyMilliseconds(score.timeGuessed, { secondsDecimalDigits: 2 })}
+        </Typography>
       </Box>
       <Box marginBottom={1}>
         <Typography variant="h6">Fastest Guess</Typography>
         <Typography variant="body1">
-          {score.max.timeGuessed === Infinity
-            ? 0
-            : score.max.timeGuessed / 1000}{' '}
-          s
+          {prettyMilliseconds(
+            score.max.timeGuessed === Infinity ? 0 : score.max.timeGuessed,
+            { secondsDecimalDigits: 2 }
+          )}
         </Typography>
       </Box>
-
-      <Button
-        onKeyDown={(e) => e.preventDefault()}
-        variant="outlined"
-        color="secondary"
-        onClick={resetGame}
-      >
-        Reset
-      </Button>
     </>
   )
 }

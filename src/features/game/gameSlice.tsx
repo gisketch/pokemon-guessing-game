@@ -2,28 +2,25 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../../redux/store'
 
 type SliceState = {
-  currentState: 'loading' | 'loaded' | 'guessed'
+  difficulty: 'easy' | 'medium' | 'hard'
 }
 
 const initialState: SliceState = {
-  currentState: 'loading',
+  difficulty: 'medium',
 }
 
 const gameSlice = createSlice({
   name: 'game',
   initialState,
   reducers: {
-    setGameState: (
-      state,
-      action: PayloadAction<'loading' | 'loaded' | 'guessed'>
-    ) => {
-      state.currentState = action.payload
+    setGameMode: (state, action: PayloadAction<SliceState>) => {
+      state = action.payload
     },
   },
 })
 
-export const { setGameState } = gameSlice.actions
+export const { setGameMode } = gameSlice.actions
 
-export const selectGameState = (state: RootState) => state.game.currentState
+export const selectGameState = (state: RootState) => state.game
 
 export default gameSlice.reducer

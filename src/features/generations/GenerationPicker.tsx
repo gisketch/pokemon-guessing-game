@@ -18,7 +18,6 @@ import gen9 from '../../assets/gen9.png'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { selectGenerations, setGenerations } from './generationsSlice'
 import { setPokemonIdsFromGens } from '../pokemon/pokemonIdsSlice'
-import { InfoOutlined } from '@mui/icons-material'
 
 const generations = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
 
@@ -40,15 +39,10 @@ const GenerationPicker = () => {
   }
   return (
     <>
-      <Stack direction="row" alignItems="center">
+      <Stack direction="row" alignItems="baseline">
         <Typography variant="h6" marginBottom={1} marginRight={1}>
           Generations
         </Typography>
-        <Box>
-          <Tooltip arrow title="Takes effect on next pokemon">
-            <InfoOutlined opacity={0.8} />
-          </Tooltip>
-        </Box>
       </Stack>
 
       <ToggleButtonGroup

@@ -3,21 +3,23 @@ import GenerationPicker from '../features/generations/GenerationPicker'
 import Score from '../features/score/Score'
 import PokemonGuess from './PokemonGuess'
 import GamePanel from './GamePanel'
+import GameSettings from '../features/game/GameSettings'
 
 const GameContainer = () => {
   return (
     <Grid container>
-      <Grid item xs={3} md={2}>
+      <Grid item xs={3}>
         <GamePanel>
           <GenerationPicker />
         </GamePanel>
       </Grid>
-      <Grid item xs={6} md={8}>
+      <Grid item xs={6}>
         <PokemonGuess />
       </Grid>
-      <Grid item xs={3} md={2}>
+      <Grid item xs={3}>
         <GamePanel>
           <Score />
+          <GameSettings />
         </GamePanel>
       </Grid>
     </Grid>
