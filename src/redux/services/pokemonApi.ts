@@ -1,6 +1,7 @@
 // Need to use the React-specific entry point to allow generating React hooks
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { Pokemon } from '../types'
+import getPokemonName from '../../utils/getPokemonName'
 
 // Define a service using a base URL and expected endpoints
 export const pokemonApi = createApi({
@@ -11,7 +12,7 @@ export const pokemonApi = createApi({
       query: (id) => ({ url: `pokemon/${id}` }), // Use an object with `url` property to include the `id` in the request
       transformResponse: (res: any): Pokemon => {
         return {
-          name: res.name,
+          name: getPokemonName(res.id),
           image:
             res.id >= 906
               ? res.sprites.other['official-artwork'].front_default
