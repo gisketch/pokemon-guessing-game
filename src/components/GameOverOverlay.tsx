@@ -30,7 +30,7 @@ const GameOverOverlay = () => {
             <span style={{ fontWeight: 700 }}>{score.max.streak}</span>, and
             your fastest guess took{' '}
             <span style={{ fontWeight: 700 }}>
-              {prettyMilliseconds(score.timeGuessed, {
+              {prettyMilliseconds(score.max.timeGuessed, {
                 secondsDecimalDigits: 2,
               })}
             </span>
