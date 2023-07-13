@@ -14,12 +14,7 @@ import {
   selectGuess,
 } from '../guess/guessSlice'
 import getRandomInteger from '../../utils/getRandomInteger'
-import {
-  guessPokemon,
-  initializeGame,
-  resetGame,
-  skipPokemon,
-} from '../../utils/gameActions'
+import { guessPokemon, resetGame, skipPokemon } from '../../utils/gameActions'
 import { selectGameQueue } from '../game/gameQueueSlice'
 
 const PokemonContainer = () => {
@@ -27,8 +22,6 @@ const PokemonContainer = () => {
 
   const randomId = useAppSelector(selectPokemonIds).currentId
   const currentGuess = useAppSelector(selectGuess)
-
-  const gameQueue = useAppSelector(selectGameQueue)
 
   const { data, error, isLoading } = useGetPokemonByIdQuery(randomId)
 
