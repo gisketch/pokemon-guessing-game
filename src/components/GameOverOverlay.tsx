@@ -10,13 +10,10 @@ import { selectScore } from '../features/score/scoreSlice'
 import { useAppDispatch, useAppSelector } from '../redux/hooks'
 import { resetGame } from '../utils/gameActions'
 import prettyMilliseconds from 'pretty-ms'
-import { selectGameQueue } from '../features/game/gameQueueSlice'
 
 const GameOverOverlay = () => {
   const dispatch = useAppDispatch()
   const score = useAppSelector(selectScore)
-  const difficultyOnQueue = useAppSelector(selectGameQueue).difficulty
-
   return (
     <>
       <Dialog
@@ -43,7 +40,7 @@ const GameOverOverlay = () => {
         <DialogActions sx={{ background: 'black' }}>
           <Button
             color="secondary"
-            onClick={() => resetGame(dispatch, difficultyOnQueue)}
+            onClick={() => resetGame(dispatch)}
             autoFocus
           >
             Try Again
