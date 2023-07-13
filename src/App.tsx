@@ -54,7 +54,7 @@ function App() {
               desktop in the meantime.
             </Box>
           ) : (
-            <Container maxWidth="xl">
+            <Container maxWidth="lg">
               <GameContainer />
             </Container>
           )}
