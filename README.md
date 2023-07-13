@@ -13,7 +13,7 @@ This project is not affiliated with The Pokémon Company. It is a fan-made proje
 
 ## Planned Updates
 
-Here's a list of enhancements we're planning to add to the game:
+Here's a list of enhancements I'm planning to add to the game:
 
 - [ ] Mobile responsive design: play the game on your phone or tablet.
 - [ ] Hints: get helpful hints to help you guess the Pokémon.
