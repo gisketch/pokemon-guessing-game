@@ -8,7 +8,9 @@ import {
   resetAll,
   resetStreak,
   setProgress,
+  startGame,
 } from '../features/score/scoreSlice'
+import { store } from '../redux/store'
 
 const changePokemon = (dispatch: any) => {
   dispatch(setProgress(0))
@@ -22,10 +24,16 @@ export const initializeGame = (dispatch: any) => {
   dispatch(setRandomId())
   dispatch(clearPokemon())
   dispatch(resetAll('medium'))
+  dispatch(startGame())
   dispatch(clearGuess())
 }
 
-export const resetGame = (dispatch: any, difficulty: any) => {
+export const startPokemonGame = (dispatch: any) => {
+  dispatch(startGame())
+}
+
+export const resetGame = (dispatch: any) => {
+  const difficulty = store.getState().gameQueue.difficulty
   dispatch(setRandomId())
   dispatch(clearPokemon())
   dispatch(resetAll(difficulty))

@@ -3,11 +3,13 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { selectScore } from '../score/scoreSlice'
 import { useEffect, useState } from 'react'
 import { skipPokemon } from '../../utils/gameActions'
+import { selectPokemon } from '../pokemon/pokemonSlice'
 
 const Timer = () => {
   const hp = useAppSelector(selectScore).hp
   const startTime = useAppSelector(selectScore).startTime
   const difficulty = useAppSelector(selectScore).difficulty
+  const currentPokemon = useAppSelector(selectPokemon).name
 
   const [remainingTime, setRemainingTime] = useState(15_000)
 
@@ -16,6 +18,8 @@ const Timer = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
+    if (!currentPokemon) return
+
     if (difficulty !== 'easy') {
       const intervalId = setInterval(() => {
         const currentTime = Date.now()
@@ -35,7 +39,7 @@ const Timer = () => {
     }
   }, [startTime])
 
-  const showTimer = difficulty !== 'easy' && hp > 0
+  const showTimer = difficulty !== 'easy' && hp > 0 && currentPokemon
 
   return (
     showTimer && (

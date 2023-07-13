@@ -106,7 +106,7 @@ const GameSettings = () => {
           onKeyDown={(e) => e.preventDefault()}
           variant="outlined"
           color="success"
-          onClick={() => resetGame(dispatch, gameQueue.difficulty)}
+          onClick={() => resetGame(dispatch)}
         >
           <Replay />
         </Button>

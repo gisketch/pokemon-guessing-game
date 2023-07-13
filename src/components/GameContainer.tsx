@@ -6,8 +6,13 @@ import GamePanel from './GamePanel'
 import GameSettings from '../features/game/GameSettings'
 import HealthPoints from '../features/score/HealthPoints'
 import GameOverOverlay from './GameOverOverlay'
+import GameStart from './GameStart'
+import { useAppSelector } from '../redux/hooks'
+import { selectScore } from '../features/score/scoreSlice'
 
 const GameContainer = () => {
+  const gameInitialized = useAppSelector(selectScore).initialized
+
   return (
     <>
       <GameOverOverlay />
@@ -18,7 +23,7 @@ const GameContainer = () => {
           </GamePanel>
         </Grid>
         <Grid item xs={6}>
-          <PokemonGuess />
+          {gameInitialized ? <PokemonGuess /> : <GameStart />}
         </Grid>
         <Grid item xs={3}>
           <GamePanel>

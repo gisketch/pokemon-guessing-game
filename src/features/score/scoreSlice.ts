@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../../redux/store'
 
 type SliceState = {
+  initialized: boolean
   hp: number
   difficulty: 'easy' | 'medium' | 'hard'
   score: number
@@ -23,6 +24,7 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
+  initialized: false,
   hp: 6,
   difficulty: 'medium',
   score: 0,
@@ -50,7 +52,7 @@ const scoreSlice = createSlice({
     addScore: (state) => {
       //Window time = 10 seconds
       state.timeGuessed = new Date().getTime() - state.startTime
-      const timeWindow = 3
+      const timeWindow = 5
       let timeBonus = 0
       if (state.timeGuessed < timeWindow * 1000) {
         //If in 3 seconds window, get max bonus
@@ -103,6 +105,9 @@ const scoreSlice = createSlice({
     decrementHp: (state) => {
       state.hp--
     },
+    startGame: (state) => {
+      state.initialized = true
+    },
   },
 })
 
@@ -114,6 +119,7 @@ export const {
   resetAll,
   setStartTime,
   decrementHp,
+  startGame,
 } = scoreSlice.actions
 
 export const selectScore = (state: RootState) => state.score

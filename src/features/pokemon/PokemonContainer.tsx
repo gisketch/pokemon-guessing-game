@@ -14,13 +14,21 @@ import {
   selectGuess,
 } from '../guess/guessSlice'
 import getRandomInteger from '../../utils/getRandomInteger'
-import { guessPokemon, initializeGame } from '../../utils/gameActions'
+import {
+  guessPokemon,
+  initializeGame,
+  resetGame,
+  skipPokemon,
+} from '../../utils/gameActions'
+import { selectGameQueue } from '../game/gameQueueSlice'
 
 const PokemonContainer = () => {
   const dispatch = useAppDispatch()
 
   const randomId = useAppSelector(selectPokemonIds).currentId
   const currentGuess = useAppSelector(selectGuess)
+
+  const gameQueue = useAppSelector(selectGameQueue)
 
   const { data, error, isLoading } = useGetPokemonByIdQuery(randomId)
 
@@ -37,27 +45,45 @@ const PokemonContainer = () => {
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-      if (
-        (event.keyCode >= 65 && event.keyCode <= 90) || // Alphabet keys (A-Z)
-        (event.keyCode >= 48 && event.keyCode <= 57) || // Numeric keys (0-9)
-        event.keyCode === 32 || // Spacebar
-        event.key === 'Backspace' || // Backspace key
-        event.key === 'Delete' || // Delete key
-        event.key === "'" || // Apostrophe key
-        event.key === '-' || // Hyphen
-        event.key === '.' //Period
-      ) {
+      if (event.ctrlKey) {
         event.preventDefault()
+        switch (event.key) {
+          case 'h':
+            console.log('hint')
+            break
+          case ' ':
+            resetGame(dispatch)
+            break
+          default:
+            break
+        }
+      } else {
+        if (
+          (event.keyCode >= 65 && event.keyCode <= 90) || // Alphabet keys (A-Z)
+          (event.keyCode >= 48 && event.keyCode <= 57) || // Numeric keys (0-9)
+          event.keyCode === 32 || // Spacebar
+          event.key === 'Backspace' || // Backspace key
+          event.key === 'Delete' || // Delete key
+          event.key === 'Tab' || //Period
+          event.key === "'" || // Apostrophe key
+          event.key === '-' || // Hyphen
+          event.key === '.' //Period
+        ) {
+          event.preventDefault()
 
-        if (event.key === 'Backspace') {
-          // Remove the last character from the guess state
-          dispatch(backspaceGuess())
-        } else if (event.key === 'Delete') {
-          // Remove all
-          dispatch(clearGuess())
-        } else {
-          const pressedKey = event.key
-          dispatch(addCurrentGuess(pressedKey))
+          if (event.key === 'Backspace') {
+            // Remove the last character from the guess state
+            dispatch(backspaceGuess())
+          } else if (event.key === 'Delete') {
+            // Remove all
+            dispatch(clearGuess())
+          } else if (event.key === 'Tab') {
+            // Skip
+            skipPokemon(dispatch)
+          } else {
+            const pressedKey = event.key
+            dispatch(addCurrentGuess(pressedKey))
+          }
         }
       }
     }
@@ -72,9 +98,9 @@ const PokemonContainer = () => {
     }
   }, [])
 
-  useEffect(() => {
-    initializeGame(dispatch)
-  }, [])
+  // useEffect(() => {
+  //   initializeGame(dispatch)
+  // }, [])
 
   useEffect(() => {
     let progress = 0
