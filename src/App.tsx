@@ -4,10 +4,12 @@ import {
   createTheme,
   ThemeProvider,
   CssBaseline,
+  useMediaQuery,
 } from '@mui/material'
 import NavBar from './components/NavBar'
 import BlurBackground from './components/BlurBackground'
 import GameContainer from './components/GameContainer'
+import Footer from './components/Footer'
 
 const theme = createTheme({
   palette: {
@@ -19,6 +21,9 @@ const theme = createTheme({
 })
 
 function App() {
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  console.log(isMobile)
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -28,12 +33,33 @@ function App() {
           background: '#000000BB',
           height: '100vh',
           backdropFilter: 'blur(75px)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
         }}
       >
-        <NavBar />
-        <Container maxWidth="xl">
-          <GameContainer />
-        </Container>
+        <div>
+          <NavBar />
+          {isMobile ? (
+            <Box
+              sx={{
+                textAlign: 'center',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                padding: 4,
+              }}
+            >
+              Sorry, the mobile version is still in progress. Please use a
+              desktop in the meantime.
+            </Box>
+          ) : (
+            <Container maxWidth="xl">
+              <GameContainer />
+            </Container>
+          )}
+        </div>
+        <Footer />
       </Box>
     </ThemeProvider>
   )

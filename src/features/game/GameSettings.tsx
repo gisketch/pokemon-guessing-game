@@ -5,6 +5,7 @@ import {
   Stack,
   ToggleButton,
   ToggleButtonGroup,
+  Tooltip,
   Typography,
 } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
@@ -84,14 +85,17 @@ const GameSettings = () => {
       </ToggleButtonGroup>
 
       <ButtonGroup variant="outlined" fullWidth>
-        <Button
-          onKeyDown={(e) => e.preventDefault()}
-          variant="outlined"
-          color="error"
-          onClick={handleSkip}
-        >
-          <SkipNext />
-        </Button>
+        <Tooltip title="Tab" arrow>
+          <Button
+            onKeyDown={(e) => e.preventDefault()}
+            variant="outlined"
+            color="error"
+            onClick={handleSkip}
+          >
+            <SkipNext />
+          </Button>
+        </Tooltip>
+
         <Button
           onKeyDown={(e) => e.preventDefault()}
           variant="outlined"
@@ -102,14 +106,17 @@ const GameSettings = () => {
         >
           <QuestionMarkOutlined />
         </Button>
-        <Button
-          onKeyDown={(e) => e.preventDefault()}
-          variant="outlined"
-          color="success"
-          onClick={() => resetGame(dispatch)}
-        >
-          <Replay />
-        </Button>
+
+        <Tooltip title="Ctrl + Space" arrow>
+          <Button
+            onKeyDown={(e) => e.preventDefault()}
+            variant="outlined"
+            color="success"
+            onClick={() => resetGame(dispatch)}
+          >
+            <Replay />
+          </Button>
+        </Tooltip>
       </ButtonGroup>
     </>
   )

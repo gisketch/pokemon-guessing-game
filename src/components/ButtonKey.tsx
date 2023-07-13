@@ -9,7 +9,7 @@ const ButtonKey = ({ children }: Props) => {
     <span
       style={{
         border: '1px solid white',
-        paddingBlock: 4,
+        paddingBlock: 2,
         paddingInline: 8,
         borderRadius: 4,
         marginInline: 4,

@@ -9,6 +9,7 @@ import GameOverOverlay from './GameOverOverlay'
 import GameStart from './GameStart'
 import { useAppSelector } from '../redux/hooks'
 import { selectScore } from '../features/score/scoreSlice'
+import Tutorial from './Tutorial'
 
 const GameContainer = () => {
   const gameInitialized = useAppSelector(selectScore).initialized
@@ -33,6 +34,7 @@ const GameContainer = () => {
           </GamePanel>
         </Grid>
       </Grid>
+      <Tutorial />
     </>
   )
 }
