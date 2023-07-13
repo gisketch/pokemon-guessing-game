@@ -15,7 +15,6 @@ import {
 } from '../guess/guessSlice'
 import getRandomInteger from '../../utils/getRandomInteger'
 import { guessPokemon, resetGame, skipPokemon } from '../../utils/gameActions'
-import { selectGameQueue } from '../game/gameQueueSlice'
 
 const PokemonContainer = () => {
   const dispatch = useAppDispatch()
