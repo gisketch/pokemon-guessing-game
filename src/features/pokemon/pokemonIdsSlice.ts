@@ -14,11 +14,13 @@ const gen9 = Array.from({ length: 105 }, (_, index) => (index + 906).toString())
 type SliceState = {
   currentId: string
   pokemonIds: string[]
+  guessedIds: string[]
 }
 
 const initialState: SliceState = {
   currentId: '1',
   pokemonIds: Array.from({ length: 386 }, (_, index) => (index + 1).toString()),
+  guessedIds: [],
 }
 
 const pokemonIdsSlice = createSlice({
@@ -54,11 +56,15 @@ const pokemonIdsSlice = createSlice({
       return {
         ...state,
         pokemonIds: [...selectedGenIds],
+        // pokemonIds: ['1', '2', '3'],
       }
     },
     setRandomId: (state) => {
-      const randomIndex = Math.floor(Math.random() * state.pokemonIds.length)
-      const newId = state.pokemonIds[randomIndex].toString()
+      const pokemonToGuess = state.pokemonIds.filter(
+        (id) => !state.guessedIds.includes(id)
+      )
+      const randomIndex = Math.floor(Math.random() * pokemonToGuess.length)
+      const newId = pokemonToGuess[randomIndex].toString()
       return {
         ...state,
         currentId: newId,
@@ -67,7 +73,7 @@ const pokemonIdsSlice = createSlice({
     excludeGuessedId: (state, action: PayloadAction<string>) => {
       return {
         ...state,
-        pokemonIds: state.pokemonIds.filter((id) => id !== action.payload),
+        guessedIds: [...state.guessedIds, action.payload],
       }
     },
   },

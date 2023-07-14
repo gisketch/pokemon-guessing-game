@@ -45,7 +45,7 @@ export const resetGame = (dispatch: any) => {
 }
 
 export const guessPokemon = (dispatch: any) => {
-  dispatch(excludeGuessedId(store.getState().pokemon.pokemon.id))
+  dispatch(excludeGuessedId(store.getState().pokemon.pokemon.id.toString()))
   dispatch(addScore())
   dispatch(addStreak())
   setTimeout(() => changePokemon(dispatch), 300)
