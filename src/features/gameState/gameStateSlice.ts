@@ -45,8 +45,8 @@ const initialState: SliceState = {
   },
 }
 
-const scoreSlice = createSlice({
-  name: 'score',
+const gameStateSlice = createSlice({
+  name: 'gameState',
   initialState,
   reducers: {
     addScore: (state) => {
@@ -120,8 +120,8 @@ export const {
   setStartTime,
   decrementHp,
   startGame,
-} = scoreSlice.actions
+} = gameStateSlice.actions
 
-export const selectScore = (state: RootState) => state.score
+export const selectGameState = (state: RootState) => state.gameState
 
-export default scoreSlice.reducer
+export default gameStateSlice.reducer

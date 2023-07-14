@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { selectPokemonIds } from './pokemonIdsSlice'
 import PokemonFrame from './PokemonFrame'
 import { selectPokemon, setPokemon } from './pokemonSlice'
-import { setProgress } from '../score/scoreSlice'
+import { setProgress } from '../gameState/gameStateSlice'
 import { motion, useAnimationControls } from 'framer-motion'
 import {
   addCurrentGuess,

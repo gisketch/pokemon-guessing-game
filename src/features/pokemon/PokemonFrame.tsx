@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { selectScore, setStartTime } from '../score/scoreSlice'
+import { selectGameState, setStartTime } from '../gameState/gameStateSlice'
 import { selectPokemon } from './pokemonSlice'
 import { motion } from 'framer-motion'
 import pokeball from '../../assets/pokeball3.png'
@@ -9,9 +9,9 @@ const PokemonFrame = () => {
   const dispatch = useAppDispatch()
 
   const pokemon = useAppSelector(selectPokemon)
-  const currentDifficulty = useAppSelector(selectScore).difficulty
+  const currentDifficulty = useAppSelector(selectGameState).difficulty
 
-  let progress = useAppSelector(selectScore).progress
+  let progress = useAppSelector(selectGameState).progress
   if (Number.isNaN(progress)) progress = 0
   const progressPercent = Math.floor(progress * 100)
 

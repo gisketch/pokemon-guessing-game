@@ -12,6 +12,7 @@ export const pokemonApi = createApi({
       query: (id) => ({ url: `pokemon/${id}` }), // Use an object with `url` property to include the `id` in the request
       transformResponse: (res: any): Pokemon => {
         return {
+          id: res.id,
           name: getPokemonName(res.id),
           image:
             res.id >= 906

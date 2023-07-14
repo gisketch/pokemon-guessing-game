@@ -4,7 +4,6 @@ import {
   createTheme,
   ThemeProvider,
   CssBaseline,
-  useMediaQuery,
 } from '@mui/material'
 import NavBar from './components/NavBar'
 import BlurBackground from './components/BlurBackground'
@@ -21,8 +20,7 @@ const theme = createTheme({
 })
 
 function App() {
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
-  console.log(isMobile)
+  // const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
     <ThemeProvider theme={theme}>
@@ -40,24 +38,9 @@ function App() {
       >
         <div>
           <NavBar />
-          {isMobile ? (
-            <Box
-              sx={{
-                textAlign: 'center',
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                padding: 4,
-              }}
-            >
-              Sorry, the mobile version is still in progress. Please use a
-              desktop in the meantime.
-            </Box>
-          ) : (
-            <Container maxWidth="lg">
-              <GameContainer />
-            </Container>
-          )}
+          <Container maxWidth="lg">
+            <GameContainer />
+          </Container>
         </div>
         <Footer />
       </Box>

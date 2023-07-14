@@ -14,8 +14,8 @@ import gen7 from '../../assets/gen7.png'
 import gen8 from '../../assets/gen8.png'
 import gen9 from '../../assets/gen9.png'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { selectGenerations, setGenerations } from './generationsSlice'
-import { setPokemonIdsFromGens } from '../pokemon/pokemonIdsSlice'
+import { queueGenerations, selectGameQueue } from '../game/gameQueueSlice'
+import { selectGameState } from '../gameState/gameStateSlice'
 
 const generations = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
 
@@ -23,7 +23,8 @@ const genIcons = [gen1, gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9]
 const genColors = ['primary', 'success', 'error']
 
 const GenerationPicker = () => {
-  const generationsPicked = useAppSelector(selectGenerations)
+  const gameInitialized = useAppSelector(selectGameState).initialized
+  const currentGeneration = useAppSelector(selectGameQueue).generations
   const dispatch = useAppDispatch()
 
   const handleGenerations = (
@@ -31,8 +32,7 @@ const GenerationPicker = () => {
     newGens: string[]
   ) => {
     if (newGens.length > 0) {
-      dispatch(setGenerations(newGens))
-      dispatch(setPokemonIdsFromGens(newGens))
+      dispatch(queueGenerations(newGens))
     }
   }
   return (
@@ -45,7 +45,7 @@ const GenerationPicker = () => {
 
       <ToggleButtonGroup
         orientation="vertical"
-        value={generationsPicked}
+        value={currentGeneration}
         onChange={handleGenerations}
         sx={{ marginBottom: 1, width: '100%' }}
       >
@@ -60,6 +60,7 @@ const GenerationPicker = () => {
             size="small"
             sx={{ height: '48px' }}
             onKeyDown={(e) => e.preventDefault()}
+            disabled={gameInitialized}
           >
             <Typography
               variant="body1"
@@ -74,7 +75,16 @@ const GenerationPicker = () => {
               }}
             >
               Gen {gen}
-              <img src={genIcons[Number(gen) - 1]} height={48} />
+              <img
+                src={genIcons[Number(gen) - 1]}
+                height={48}
+                style={{
+                  filter:
+                    gameInitialized && !currentGeneration.includes(gen)
+                      ? 'grayscale(100%)'
+                      : '',
+                }}
+              />
             </Typography>
           </ToggleButton>
         ))}

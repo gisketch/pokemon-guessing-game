@@ -6,34 +6,34 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material'
-import { selectScore } from '../features/score/scoreSlice'
+import { selectGameState } from '../features/gameState/gameStateSlice'
 import { useAppDispatch, useAppSelector } from '../redux/hooks'
 import { resetGame } from '../utils/gameActions'
 import prettyMilliseconds from 'pretty-ms'
 
 const GameOverOverlay = () => {
   const dispatch = useAppDispatch()
-  const score = useAppSelector(selectScore)
+  const gameState = useAppSelector(selectGameState)
   return (
     <>
       <Dialog
-        open={score.hp <= 0}
+        open={gameState.hp <= 0}
         // onClose={(handleClose)}
       >
         <DialogTitle sx={{ background: 'black' }}>Game over</DialogTitle>
         <DialogContent sx={{ background: 'black' }}>
           <DialogContentText>
             You're out of PokeBalls. You got a total of{' '}
-            <span style={{ fontWeight: 700 }}>{score.score}</span> score,
-            guessed <span style={{ fontWeight: 700 }}>{score.guesses}</span>{' '}
+            <span style={{ fontWeight: 700 }}>{gameState.score}</span> score,
+            guessed <span style={{ fontWeight: 700 }}>{gameState.guesses}</span>{' '}
             pokemon, a max streak of{' '}
-            <span style={{ fontWeight: 700 }}>{score.max.streak}</span>, and
+            <span style={{ fontWeight: 700 }}>{gameState.max.streak}</span>, and
             your fastest guess took{' '}
             <span style={{ fontWeight: 700 }}>
               {prettyMilliseconds(
-                score.max.timeGuessed === Infinity
+                gameState.max.timeGuessed === Infinity
                   ? 5000
-                  : score.max.timeGuessed,
+                  : gameState.max.timeGuessed,
                 {
                   secondsDecimalDigits: 2,
                 }

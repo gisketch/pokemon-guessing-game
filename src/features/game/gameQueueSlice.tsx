@@ -3,10 +3,12 @@ import { RootState } from '../../redux/store'
 
 type SliceState = {
   difficulty: 'easy' | 'medium' | 'hard'
+  generations: string[]
 }
 
 const initialState: SliceState = {
   difficulty: 'medium',
+  generations: ['1', '2', '3'],
 }
 
 const gameQueueSlice = createSlice({
@@ -19,10 +21,13 @@ const gameQueueSlice = createSlice({
     ) => {
       state.difficulty = action.payload
     },
+    queueGenerations: (state, action: PayloadAction<string[]>) => {
+      state.generations = action.payload
+    },
   },
 })
 
-export const { queueDifficulty } = gameQueueSlice.actions
+export const { queueDifficulty, queueGenerations } = gameQueueSlice.actions
 
 export const selectGameQueue = (state: RootState) => state.gameQueue
 

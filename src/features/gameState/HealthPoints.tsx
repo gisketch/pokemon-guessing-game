@@ -1,12 +1,12 @@
 import { Typography, Box, Stack } from '@mui/material'
 import { useAppSelector } from '../../redux/hooks'
-import { selectScore } from './scoreSlice'
+import { selectGameState } from './gameStateSlice'
 import pokeball from '../../assets/pokeballPixel.png'
 import { AnimatePresence, motion } from 'framer-motion'
 import getRandomInteger from '../../utils/getRandomInteger'
 
 const HealthPoints = () => {
-  const hp = useAppSelector(selectScore).hp
+  const hp = useAppSelector(selectGameState).hp
 
   let renderedHp
 

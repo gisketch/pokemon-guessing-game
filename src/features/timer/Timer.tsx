@@ -1,14 +1,14 @@
 import { Typography } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { selectScore } from '../score/scoreSlice'
+import { selectGameState } from '../gameState/gameStateSlice'
 import { useEffect, useState } from 'react'
 import { skipPokemon } from '../../utils/gameActions'
 import { selectPokemon } from '../pokemon/pokemonSlice'
 
 const Timer = () => {
-  const hp = useAppSelector(selectScore).hp
-  const startTime = useAppSelector(selectScore).startTime
-  const difficulty = useAppSelector(selectScore).difficulty
+  const hp = useAppSelector(selectGameState).hp
+  const startTime = useAppSelector(selectGameState).startTime
+  const difficulty = useAppSelector(selectGameState).difficulty
   const currentPokemon = useAppSelector(selectPokemon).name
 
   const [remainingTime, setRemainingTime] = useState(15_000)

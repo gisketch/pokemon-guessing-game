@@ -12,12 +12,12 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { queueDifficulty, selectGameQueue } from './gameQueueSlice'
 import { QuestionMarkOutlined, Replay, SkipNext } from '@mui/icons-material'
 import { resetGame, skipPokemon } from '../../utils/gameActions'
-import { selectScore } from '../score/scoreSlice'
+import { selectGameState } from '../gameState/gameStateSlice'
 import { selectPokemon } from '../pokemon/pokemonSlice'
 
 const GameSettings = () => {
   const dispatch = useAppDispatch()
-  const currentDifficulty = useAppSelector(selectScore).difficulty
+  const currentDifficulty = useAppSelector(selectGameState).difficulty
   const gameQueue = useAppSelector(selectGameQueue)
   const currentPokemon = useAppSelector(selectPokemon)
 

@@ -1,18 +1,18 @@
 import { Grid } from '@mui/material'
 import GenerationPicker from '../features/generations/GenerationPicker'
-import Score from '../features/score/Score'
+import Score from '../features/gameState/Score'
 import PokemonGuess from './PokemonGuess'
 import GamePanel from './GamePanel'
 import GameSettings from '../features/game/GameSettings'
-import HealthPoints from '../features/score/HealthPoints'
+import HealthPoints from '../features/gameState/HealthPoints'
 import GameOverOverlay from './GameOverOverlay'
 import GameStart from './GameStart'
 import { useAppSelector } from '../redux/hooks'
-import { selectScore } from '../features/score/scoreSlice'
+import { selectGameState } from '../features/gameState/gameStateSlice'
 import Tutorial from './Tutorial'
 
 const GameContainer = () => {
-  const gameInitialized = useAppSelector(selectScore).initialized
+  const gameInitialized = useAppSelector(selectGameState).initialized
 
   return (
     <>

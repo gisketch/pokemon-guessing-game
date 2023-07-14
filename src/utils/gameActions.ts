@@ -1,5 +1,9 @@
 import { clearGuess } from '../features/guess/guessSlice'
-import { setRandomId } from '../features/pokemon/pokemonIdsSlice'
+import {
+  excludeGuessedId,
+  setPokemonIdsFromGens,
+  setRandomId,
+} from '../features/pokemon/pokemonIdsSlice'
 import { clearPokemon } from '../features/pokemon/pokemonSlice'
 import {
   addScore,
@@ -9,7 +13,7 @@ import {
   resetStreak,
   setProgress,
   startGame,
-} from '../features/score/scoreSlice'
+} from '../features/gameState/gameStateSlice'
 import { store } from '../redux/store'
 
 const changePokemon = (dispatch: any) => {
@@ -21,11 +25,8 @@ const changePokemon = (dispatch: any) => {
 
 export const initializeGame = (dispatch: any) => {
   dispatch(setProgress(0))
-  dispatch(setRandomId())
-  dispatch(clearPokemon())
   dispatch(resetAll('medium'))
   dispatch(startGame())
-  dispatch(clearGuess())
 }
 
 export const startPokemonGame = (dispatch: any) => {
@@ -35,6 +36,8 @@ export const startPokemonGame = (dispatch: any) => {
 
 export const resetGame = (dispatch: any) => {
   const difficulty = store.getState().gameQueue.difficulty
+  const generations = store.getState().gameQueue.generations
+  dispatch(setPokemonIdsFromGens(generations))
   dispatch(setRandomId())
   dispatch(clearPokemon())
   dispatch(resetAll(difficulty))
@@ -42,6 +45,7 @@ export const resetGame = (dispatch: any) => {
 }
 
 export const guessPokemon = (dispatch: any) => {
+  dispatch(excludeGuessedId(store.getState().pokemon.pokemon.id))
   dispatch(addScore())
   dispatch(addStreak())
   setTimeout(() => changePokemon(dispatch), 300)

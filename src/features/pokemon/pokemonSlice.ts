@@ -4,12 +4,13 @@ import { RootState } from '../../redux/store'
 
 type SliceState = {
   pokemon: {
+    id: string
     name: string
     image: string
   }
 }
 
-const initialState: SliceState = { pokemon: { name: '', image: '' } }
+const initialState: SliceState = { pokemon: { id: '', name: '', image: '' } }
 
 const pokemonSlice = createSlice({
   name: 'pokemon',
@@ -19,7 +20,7 @@ const pokemonSlice = createSlice({
       return { pokemon: action.payload }
     },
     clearPokemon: (state) => {
-      return { pokemon: { name: '', image: '' } }
+      return initialState
     },
   },
 })
