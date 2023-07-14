@@ -19,7 +19,7 @@ const GameContainer = () => {
       <GameOverOverlay />
       <Grid container>
         <Grid item xs={3}>
-          <GamePanel>
+          <GamePanel position="left">
             <GenerationPicker />
           </GamePanel>
         </Grid>
@@ -33,7 +33,7 @@ const GameContainer = () => {
           )}
         </Grid>
         <Grid item xs={3}>
-          <GamePanel>
+          <GamePanel position="right">
             <HealthPoints />
             <Score />
             <GameSettings />

@@ -3,6 +3,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Typography,
+  Box,
 } from '@mui/material'
 import gen1 from '../../assets/gen1.png'
 import gen2 from '../../assets/gen2.png'

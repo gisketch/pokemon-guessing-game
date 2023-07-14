@@ -8,6 +8,7 @@ import {
   Box,
   Stack,
   Tooltip,
+  CircularProgress,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { readLeaderboard } from '../services/leaderboardApi'
@@ -30,7 +31,7 @@ interface Entry {
 }
 
 const Leaderboard = () => {
-  const [data, setData] = useState()
+  const [data, setData] = useState([])
   const genIcons = [gen1, gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9]
 
   useEffect(() => {
@@ -45,68 +46,76 @@ const Leaderboard = () => {
   const dataToMap: Entry[] = Object.values(data || {})
 
   return (
-    <TableContainer component={Box}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Generations</TableCell>
-            <TableCell align="right">Max Streak</TableCell>
-            <TableCell align="right">Fastest Guess</TableCell>
-            <TableCell align="right">Guesses</TableCell>
-            <TableCell align="right">Score</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {dataToMap
-            .sort((a: Entry, b) => b.playerData.score - a.playerData.score)
-            .map((entry: Entry) => {
-              const playerData = entry.playerData
-              return (
-                <TableRow key={entry.uuid}>
-                  <TableCell>{playerData.name}</TableCell>
-                  <TableCell align="right">
-                    <Stack direction="row" justifyContent="flex-end">
-                      {playerData.generations.map((gen) => {
-                        return (
-                          <Tooltip title={gen} key={gen}>
-                            <div
-                              style={{
-                                height: 24,
-                                width: 24,
-                                overflow: 'hidden',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginLeft: 4,
-                              }}
-                            >
-                              <img
+    <>
+      <TableContainer component={Box} sx={{ overflow: 'hidden' }}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell align="right">Generations</TableCell>
+              <TableCell align="right">Max Streak</TableCell>
+              <TableCell align="right">Fastest Guess</TableCell>
+              <TableCell align="right">Guesses</TableCell>
+              <TableCell align="right">Score</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {dataToMap
+              .sort((a: Entry, b) => b.playerData.score - a.playerData.score)
+              .map((entry: Entry) => {
+                const playerData = entry.playerData
+                return (
+                  <TableRow key={entry.uuid}>
+                    <TableCell>{playerData.name}</TableCell>
+                    <TableCell align="right">
+                      <Stack direction="row" justifyContent="flex-end">
+                        {playerData.generations.map((gen) => {
+                          return (
+                            <Tooltip title={gen} key={gen}>
+                              <div
                                 style={{
-                                  height: '50px',
+                                  height: 24,
+                                  width: 24,
+                                  overflow: 'hidden',
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  marginLeft: 4,
                                 }}
-                                src={genIcons[Number(gen) - 1]}
-                              />
-                            </div>
-                          </Tooltip>
-                        )
-                      })}
-                    </Stack>
-                  </TableCell>
-                  <TableCell align="right">{playerData.maxStreak}</TableCell>
-                  <TableCell align="right">
-                    {playerData.fastestGuess !== undefined
-                      ? prettyMilliseconds(playerData.fastestGuess)
-                      : ''}
-                  </TableCell>
-                  <TableCell align="right">{playerData.guesses}</TableCell>
-                  <TableCell align="right">{playerData.score}</TableCell>
-                </TableRow>
-              )
-            })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                              >
+                                <img
+                                  style={{
+                                    height: '50px',
+                                  }}
+                                  src={genIcons[Number(gen) - 1]}
+                                />
+                              </div>
+                            </Tooltip>
+                          )
+                        })}
+                      </Stack>
+                    </TableCell>
+                    <TableCell align="right">{playerData.maxStreak}</TableCell>
+                    <TableCell align="right">
+                      {playerData.fastestGuess !== undefined
+                        ? prettyMilliseconds(playerData.fastestGuess)
+                        : ''}
+                    </TableCell>
+                    <TableCell align="right">{playerData.guesses}</TableCell>
+                    <TableCell align="right">{playerData.score}</TableCell>
+                  </TableRow>
+                )
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {data.length === 0 && (
+        <Stack direction="column" alignItems="center" padding={4} gap={2}>
+          <CircularProgress />
+          Fetching leaderboard
+        </Stack>
+      )}
+    </>
   )
 }
 

@@ -1,25 +1,33 @@
-import { Box } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { ReactNode } from 'react'
 
 interface Props {
   children: ReactNode
+  position: 'left' | 'right'
 }
 
-const GamePanel = ({ children }: Props) => {
+const GamePanel = ({ children, position }: Props) => {
   return (
-    <Box
-      sx={{
-        border: 1,
-        borderColor: '#FFFFFF55',
-        borderRadius: '16px',
-        backdropFilter: 'blur(75px)',
-        height: '100%',
-      }}
-      paddingX={2}
-      paddingY={1}
+    <Stack
+      direction="row"
+      justifyContent={position === 'left' ? 'flex-start' : 'flex-end'}
     >
-      {children}
-    </Box>
+      <Box
+        sx={{
+          border: 1,
+          borderColor: '#FFFFFF55',
+          borderRadius: '16px',
+          backdropFilter: 'blur(75px)',
+          width: 225,
+          minWidth: 200,
+          height: '100%',
+        }}
+        paddingX={2}
+        paddingY={1}
+      >
+        {children}
+      </Box>
+    </Stack>
   )
 }
 
