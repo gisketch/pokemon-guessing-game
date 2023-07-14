@@ -44,9 +44,9 @@ const Timer = () => {
   return (
     showTimer && (
       <Typography
-        variant="h4"
+        variant="h5"
         fontWeight={600}
-        width={100}
+        width={60}
         color={remainingTime <= 3000 ? `rgb(${225}, 40, 40)` : 'white'}
       >
         {(remainingTime / 1000).toFixed(2)}

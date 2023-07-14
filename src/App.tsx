@@ -1,51 +1,24 @@
 import {
-  Box,
-  Container,
-  createTheme,
-  ThemeProvider,
-  CssBaseline,
-} from '@mui/material'
-import NavBar from './components/NavBar'
-import BlurBackground from './components/BlurBackground'
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from 'react-router-dom'
+import RootLayout from './pages/RootLayout'
 import GameContainer from './components/GameContainer'
-import Footer from './components/Footer'
+import Leaderboard from './pages/Leaderboard'
 
-const theme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-  typography: {
-    fontFamily: ['Clash Display', 'Roboto'].join(','),
-  },
-})
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<RootLayout />}>
+      <Route index element={<GameContainer />} />
+      <Route path="leaderboard" element={<Leaderboard />} />
+    </Route>
+  )
+)
 
 function App() {
-  // const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
-
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <BlurBackground />
-      <Box
-        sx={{
-          background: '#000000BB',
-          height: '100vh',
-          backdropFilter: 'blur(75px)',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-        }}
-      >
-        <div>
-          <NavBar />
-          <Container maxWidth="lg">
-            <GameContainer />
-          </Container>
-        </div>
-        <Footer />
-      </Box>
-    </ThemeProvider>
-  )
+  return <RouterProvider router={router} />
 }
 
 export default App

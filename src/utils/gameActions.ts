@@ -11,6 +11,7 @@ import {
   decrementHp,
   resetAll,
   resetStreak,
+  setGameOver,
   setProgress,
   startGame,
 } from '../features/gameState/gameStateSlice'
@@ -35,6 +36,7 @@ export const startPokemonGame = (dispatch: any) => {
 }
 
 export const resetGame = (dispatch: any) => {
+  dispatch(setGameOver(false))
   const difficulty = store.getState().gameQueue.difficulty
   const generations = store.getState().gameQueue.generations
   dispatch(setPokemonIdsFromGens(generations))

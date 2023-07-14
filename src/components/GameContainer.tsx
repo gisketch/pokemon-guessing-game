@@ -12,7 +12,7 @@ import { selectGameState } from '../features/gameState/gameStateSlice'
 import Tutorial from './Tutorial'
 
 const GameContainer = () => {
-  const gameInitialized = useAppSelector(selectGameState).initialized
+  const gameState = useAppSelector(selectGameState)
 
   return (
     <>
@@ -24,7 +24,13 @@ const GameContainer = () => {
           </GamePanel>
         </Grid>
         <Grid item xs={6}>
-          {gameInitialized ? <PokemonGuess /> : <GameStart />}
+          {gameState.isGameOver ? (
+            <></>
+          ) : gameState.initialized ? (
+            <PokemonGuess />
+          ) : (
+            <GameStart />
+          )}
         </Grid>
         <Grid item xs={3}>
           <GamePanel>

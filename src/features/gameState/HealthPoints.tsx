@@ -4,6 +4,7 @@ import { selectGameState } from './gameStateSlice'
 import pokeball from '../../assets/pokeballPixel.png'
 import { AnimatePresence, motion } from 'framer-motion'
 import getRandomInteger from '../../utils/getRandomInteger'
+import Timer from '../timer/Timer'
 
 const HealthPoints = () => {
   const hp = useAppSelector(selectGameState).hp
@@ -28,7 +29,11 @@ const HealthPoints = () => {
   return (
     <>
       <Box marginBottom={1}>
-        <Typography variant="h6">HP</Typography>
+        <Stack direction="row" justifyContent="space-between">
+          <Typography variant="h6">HP</Typography>
+          <Timer />
+        </Stack>
+
         <Stack direction="row" position="absolute" zIndex={2} gap={1}>
           <AnimatePresence>{renderedHp}</AnimatePresence>
         </Stack>

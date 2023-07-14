@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { Pokemon } from '../../redux/types'
+import { Pokemon } from '../../utils/types'
 import { RootState } from '../../redux/store'
 
 type SliceState = {
