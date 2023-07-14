@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material'
+import { Box, CircularProgress, Typography } from '@mui/material'
 import { useGetPokemonByIdQuery } from '../../redux/services/pokemonApi'
 import { KeyboardEvent, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
@@ -19,7 +19,8 @@ import { guessPokemon, resetGame, skipPokemon } from '../../utils/gameActions'
 const PokemonContainer = () => {
   const dispatch = useAppDispatch()
 
-  const randomId = useAppSelector(selectPokemonIds).currentId
+  const pokemonId = useAppSelector(selectPokemonIds)
+  const randomId = pokemonId.currentId
   const currentGuess = useAppSelector(selectGuess)
 
   const { data, error, isLoading } = useGetPokemonByIdQuery(randomId)
@@ -90,10 +91,6 @@ const PokemonContainer = () => {
     }
   }, [])
 
-  // useEffect(() => {
-  //   initializeGame(dispatch)
-  // }, [])
-
   useEffect(() => {
     let progress = 0
     const pokemonName = currentPokemon.name
@@ -151,7 +148,11 @@ const PokemonContainer = () => {
         }}
       >
         <motion.div animate={pokeFrameControls}>
-          {isLoading || error ? <p>Loading...</p> : <PokemonFrame />}
+          {isLoading || error ? (
+            <CircularProgress color="success" />
+          ) : (
+            <PokemonFrame />
+          )}
         </motion.div>
       </Box>
       <motion.div
