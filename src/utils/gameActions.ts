@@ -29,8 +29,8 @@ export const initializeGame = (dispatch: any) => {
 }
 
 export const startPokemonGame = (dispatch: any) => {
+  resetGame(dispatch)
   dispatch(startGame())
-  dispatch(setRandomId())
 }
 
 export const resetGame = (dispatch: any) => {

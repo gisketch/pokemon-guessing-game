@@ -27,7 +27,7 @@ const Footer = () => {
         Enjoyed the game?{' '}
         <Tooltip title="GCash 09309118777">
           <a style={{ color: '#6fbf73', fontWeight: 500 }}>Support my work</a>
-        </Tooltip>
+        </Tooltip>{' '}
         | Found a bug?{' '}
         <a
           href="mailto:dev@gisketch.com"
