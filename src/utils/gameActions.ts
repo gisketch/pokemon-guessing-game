@@ -26,7 +26,7 @@ const changePokemon = (dispatch: any) => {
 
 export const initializeGame = (dispatch: any) => {
   dispatch(setProgress(0))
-  dispatch(resetAll('medium'))
+  dispatch(resetAll())
   dispatch(startGame())
 }
 
@@ -37,12 +37,11 @@ export const startPokemonGame = (dispatch: any) => {
 
 export const resetGame = (dispatch: any) => {
   dispatch(setGameOver(false))
-  const difficulty = store.getState().gameQueue.difficulty
   const generations = store.getState().gameQueue.generations
   dispatch(setPokemonIdsFromGens(generations))
   dispatch(setRandomId())
   dispatch(clearPokemon())
-  dispatch(resetAll(difficulty))
+  dispatch(resetAll())
   dispatch(clearGuess())
 }
 

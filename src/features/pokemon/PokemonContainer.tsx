@@ -1,4 +1,11 @@
-import { Box, CircularProgress, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Input,
+  Stack,
+  Typography,
+} from '@mui/material'
 import { useGetPokemonByIdQuery } from '../../redux/services/pokemonApi'
 import { KeyboardEvent, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
@@ -12,12 +19,16 @@ import {
   backspaceGuess,
   clearGuess,
   selectGuess,
+  setGuess,
 } from '../guess/guessSlice'
 import getRandomInteger from '../../utils/getRandomInteger'
 import { guessPokemon, resetGame, skipPokemon } from '../../utils/gameActions'
+import { selectResponsive } from '../responsive/responsiveSlice'
 
 const PokemonContainer = () => {
   const dispatch = useAppDispatch()
+
+  const isMobile = useAppSelector(selectResponsive).isMobile
 
   const pokemonId = useAppSelector(selectPokemonIds)
   const randomId = pokemonId.currentId
@@ -37,59 +48,61 @@ const PokemonContainer = () => {
   }, [currentGuess])
 
   useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-      if (event.ctrlKey) {
-        event.preventDefault()
-        switch (event.key) {
-          case 'h':
-            console.log('hint')
-            break
-          case ' ':
-            resetGame(dispatch)
-            break
-          default:
-            break
-        }
-      } else {
-        if (
-          (event.keyCode >= 65 && event.keyCode <= 90) || // Alphabet keys (A-Z)
-          (event.keyCode >= 48 && event.keyCode <= 57) || // Numeric keys (0-9)
-          event.keyCode === 32 || // Spacebar
-          event.key === 'Backspace' || // Backspace key
-          event.key === 'Delete' || // Delete key
-          event.key === 'Tab' || //Period
-          event.key === "'" || // Apostrophe key
-          event.key === '-' || // Hyphen
-          event.key === '.' //Period
-        ) {
+    if (!isMobile) {
+      function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+        if (event.ctrlKey) {
           event.preventDefault()
+          switch (event.key) {
+            case 'h':
+              console.log('hint')
+              break
+            case ' ':
+              resetGame(dispatch)
+              break
+            default:
+              break
+          }
+        } else {
+          if (
+            (event.keyCode >= 65 && event.keyCode <= 90) || // Alphabet keys (A-Z)
+            (event.keyCode >= 48 && event.keyCode <= 57) || // Numeric keys (0-9)
+            event.keyCode === 32 || // Spacebar
+            event.key === 'Backspace' || // Backspace key
+            event.key === 'Delete' || // Delete key
+            event.key === 'Tab' || //Period
+            event.key === "'" || // Apostrophe key
+            event.key === '-' || // Hyphen
+            event.key === '.' //Period
+          ) {
+            event.preventDefault()
 
-          if (event.key === 'Backspace') {
-            // Remove the last character from the guess state
-            dispatch(backspaceGuess())
-          } else if (event.key === 'Delete') {
-            // Remove all
-            dispatch(clearGuess())
-          } else if (event.key === 'Tab') {
-            // Skip
-            skipPokemon(dispatch)
-          } else {
-            const pressedKey = event.key
-            dispatch(addCurrentGuess(pressedKey))
+            if (event.key === 'Backspace') {
+              // Remove the last character from the guess state
+              dispatch(backspaceGuess())
+            } else if (event.key === 'Delete') {
+              // Remove all
+              dispatch(clearGuess())
+            } else if (event.key === 'Tab') {
+              // Skip
+              skipPokemon(dispatch)
+            } else {
+              const pressedKey = event.key
+              dispatch(addCurrentGuess(pressedKey))
+            }
           }
         }
       }
-    }
 
-    //@ts-ignore
-    document.addEventListener('keydown', handleKeyDown)
-
-    // Don't forget to clean up
-    return function cleanup() {
       //@ts-ignore
-      document.removeEventListener('keydown', handleKeyDown)
+      document.addEventListener('keydown', handleKeyDown)
+
+      // Don't forget to clean up
+      return function cleanup() {
+        //@ts-ignore
+        document.removeEventListener('keydown', handleKeyDown)
+      }
     }
-  }, [])
+  }, [isMobile])
 
   useEffect(() => {
     let progress = 0
@@ -171,20 +184,48 @@ const PokemonContainer = () => {
           MozUserSelect: 'none',
         }}
       >
-        <Typography
-          variant="h4"
-          position="absolute"
-          textAlign="center"
-          fontWeight={600}
-          fontSize={45}
-          noWrap
-        >
-          {currentGuess}
-        </Typography>
+        {isMobile ? (
+          <Stack direction="row" gap={2}>
+            <Input
+              color="secondary"
+              sx={{
+                width: '100%',
+                textAlign: 'center',
+                fontSize: 24,
+                fontWeight: 700,
+                border: 'none',
+              }}
+              placeholder="Type here"
+              value={currentGuess}
+              onChange={(e) => dispatch(setGuess(e.target.value))}
+            ></Input>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => {
+                if (currentPokemon.name !== '') skipPokemon(dispatch)
+              }}
+            >
+              SKIP
+            </Button>
+          </Stack>
+        ) : (
+          <Typography
+            variant="h4"
+            position="absolute"
+            textAlign="center"
+            fontWeight={600}
+            fontSize={45}
+            noWrap
+          >
+            {currentGuess}
+          </Typography>
+        )}
+
         <Typography
           variant="h2"
           zIndex={-2}
-          position="relative"
+          position={isMobile ? 'absolute' : 'relative'}
           textAlign="center"
           fontWeight={800}
           fontSize={100}

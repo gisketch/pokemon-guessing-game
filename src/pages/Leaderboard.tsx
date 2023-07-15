@@ -24,6 +24,8 @@ import gen6 from '../assets/gen6.png'
 import gen7 from '../assets/gen7.png'
 import gen8 from '../assets/gen8.png'
 import gen9 from '../assets/gen9.png'
+import { useAppSelector } from '../redux/hooks'
+import { selectResponsive } from '../features/responsive/responsiveSlice'
 
 interface Entry {
   playerData: PlayerData
@@ -33,6 +35,8 @@ interface Entry {
 const Leaderboard = () => {
   const [data, setData] = useState([])
   const genIcons = [gen1, gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9]
+
+  const isMobile = useAppSelector(selectResponsive).isMobile
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,15 +51,19 @@ const Leaderboard = () => {
 
   return (
     <>
-      <TableContainer component={Box} sx={{ overflow: 'hidden' }}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableContainer component={Box}>
+        <Table sx={{ minWidth: 200 }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell align="right">Generations</TableCell>
-              <TableCell align="right">Max Streak</TableCell>
-              <TableCell align="right">Fastest Guess</TableCell>
-              <TableCell align="right">Guesses</TableCell>
+              {!isMobile && (
+                <>
+                  <TableCell align="right">Max Streak</TableCell>
+                  <TableCell align="right">Fastest Guess</TableCell>
+                  <TableCell align="right">Guesses</TableCell>
+                </>
+              )}
               <TableCell align="right">Score</TableCell>
             </TableRow>
           </TableHead>
@@ -95,13 +103,21 @@ const Leaderboard = () => {
                         })}
                       </Stack>
                     </TableCell>
-                    <TableCell align="right">{playerData.maxStreak}</TableCell>
-                    <TableCell align="right">
-                      {playerData.fastestGuess !== undefined
-                        ? prettyMilliseconds(playerData.fastestGuess)
-                        : ''}
-                    </TableCell>
-                    <TableCell align="right">{playerData.guesses}</TableCell>
+                    {!isMobile && (
+                      <>
+                        <TableCell align="right">
+                          {playerData.maxStreak}
+                        </TableCell>
+                        <TableCell align="right">
+                          {playerData.fastestGuess !== undefined
+                            ? prettyMilliseconds(playerData.fastestGuess)
+                            : ''}
+                        </TableCell>
+                        <TableCell align="right">
+                          {playerData.guesses}
+                        </TableCell>
+                      </>
+                    )}
                     <TableCell align="right">{playerData.score}</TableCell>
                   </TableRow>
                 )

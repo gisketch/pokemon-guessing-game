@@ -6,6 +6,7 @@ import pokemonIdsReducer from '../features/pokemon/pokemonIdsSlice'
 import gameStateReducer from '../features/gameState/gameStateSlice'
 import gameQueueReducer from '../features/game/gameQueueSlice'
 import guessReducer from '../features/guess/guessSlice'
+import responsiveReducer from '../features/responsive/responsiveSlice'
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     guess: guessReducer,
     gameState: gameStateReducer,
     gameQueue: gameQueueReducer,
+    responsive: responsiveReducer,
     [pokemonApi.reducerPath]: pokemonApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

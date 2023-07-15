@@ -10,6 +10,9 @@ import BlurBackground from '../components/BlurBackground'
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar'
 import { Outlet } from 'react-router-dom'
+import { useAppDispatch } from '../redux/hooks'
+import { useEffect } from 'react'
+import { setIsMobile } from '../features/responsive/responsiveSlice'
 
 const theme = createTheme({
   palette: {
@@ -22,6 +25,12 @@ const theme = createTheme({
 
 const RootLayout = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(setIsMobile(isMobile))
+  }, [isMobile])
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -29,23 +38,18 @@ const RootLayout = () => {
       <Box
         sx={{
           background: '#000000BB',
-          height: '100vh',
+          height: '100svh',
           backdropFilter: 'blur(75px)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
+          overflow: 'hidden',
         }}
       >
         <div>
           <NavBar />
           <Container maxWidth="lg">
-            {isMobile ? (
-              <Box width="100%" textAlign="center">
-                Sorry, mobile version is still in progress.
-              </Box>
-            ) : (
-              <Outlet />
-            )}
+            <Outlet />
           </Container>
         </div>
         <Footer />

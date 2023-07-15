@@ -1,10 +1,9 @@
-import { Typography, Box, Stack } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { useAppSelector } from '../../redux/hooks'
 import { selectGameState } from './gameStateSlice'
 import pokeball from '../../assets/pokeballPixel.png'
 import { AnimatePresence, motion } from 'framer-motion'
 import getRandomInteger from '../../utils/getRandomInteger'
-import Timer from '../timer/Timer'
 
 const HealthPoints = () => {
   const hp = useAppSelector(selectGameState).hp
@@ -27,28 +26,21 @@ const HealthPoints = () => {
   }
 
   return (
-    <>
-      <Box marginBottom={1}>
-        <Stack direction="row" justifyContent="space-between">
-          <Typography variant="h6">HP</Typography>
-          <Timer />
-        </Stack>
-
-        <Stack direction="row" position="absolute" zIndex={2} gap={1}>
-          <AnimatePresence>{renderedHp}</AnimatePresence>
-        </Stack>
-        <Stack direction="row" gap={1} zIndex={-1}>
-          {Array.from({ length: 6 }, (_, index) => (
-            <img
-              key={index}
-              src={pokeball}
-              alt="Pokeball"
-              style={{ filter: 'grayscale(100%) brightness(0.7)' }}
-            />
-          ))}
-        </Stack>
-      </Box>
-    </>
+    <Box>
+      <Stack direction="row" position="absolute" zIndex={2} gap={1}>
+        <AnimatePresence>{renderedHp}</AnimatePresence>
+      </Stack>
+      <Stack direction="row" gap={1} zIndex={-1}>
+        {Array.from({ length: 6 }, (_, index) => (
+          <img
+            key={index}
+            src={pokeball}
+            alt="Pokeball"
+            style={{ filter: 'grayscale(100%) brightness(0.7)' }}
+          />
+        ))}
+      </Stack>
+    </Box>
   )
 }
 

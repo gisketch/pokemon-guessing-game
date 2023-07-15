@@ -94,10 +94,10 @@ const gameStateSlice = createSlice({
     resetStreak: (state) => {
       state.streak = 0
     },
-    resetAll: (state, action: PayloadAction<'easy' | 'medium' | 'hard'>) => {
+    resetAll: (state) => {
       return {
         ...initialState,
-        difficulty: action.payload,
+        difficulty: state.difficulty,
         startTime: new Date().getTime(),
       }
     },
@@ -113,6 +113,12 @@ const gameStateSlice = createSlice({
     setGameOver: (state, action: PayloadAction<boolean>) => {
       state.isGameOver = action.payload
     },
+    setDifficulty: (
+      state,
+      action: PayloadAction<'easy' | 'medium' | 'hard'>
+    ) => {
+      state.difficulty = action.payload
+    },
   },
 })
 
@@ -126,6 +132,7 @@ export const {
   decrementHp,
   startGame,
   setGameOver,
+  setDifficulty,
 } = gameStateSlice.actions
 
 export const selectGameState = (state: RootState) => state.gameState

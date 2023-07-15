@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material'
+import { Box, Divider, Grid, Stack, Typography } from '@mui/material'
 import GenerationPicker from '../features/generations/GenerationPicker'
 import Score from '../features/gameState/Score'
 import PokemonGuess from './PokemonGuess'
@@ -10,20 +10,27 @@ import GameStart from './GameStart'
 import { useAppSelector } from '../redux/hooks'
 import { selectGameState } from '../features/gameState/gameStateSlice'
 import Tutorial from './Tutorial'
+import GameButtons from '../features/game/GameButtons'
+import { selectResponsive } from '../features/responsive/responsiveSlice'
+import Timer from '../features/timer/Timer'
 
 const GameContainer = () => {
   const gameState = useAppSelector(selectGameState)
+  const isMobile = useAppSelector(selectResponsive).isMobile
 
   return (
     <>
       <GameOverOverlay />
       <Grid container>
-        <Grid item xs={3}>
-          <GamePanel position="left">
-            <GenerationPicker />
-          </GamePanel>
-        </Grid>
-        <Grid item xs={6}>
+        {!isMobile && (
+          <Grid item xs={3}>
+            <GamePanel position="left">
+              <GenerationPicker />
+            </GamePanel>
+          </Grid>
+        )}
+
+        <Grid item xs={isMobile ? 12 : 6} minHeight={500}>
           {gameState.isGameOver ? (
             <></>
           ) : gameState.initialized ? (
@@ -32,15 +39,27 @@ const GameContainer = () => {
             <GameStart />
           )}
         </Grid>
-        <Grid item xs={3}>
-          <GamePanel position="right">
-            <HealthPoints />
-            <Score />
-            <GameSettings />
-          </GamePanel>
-        </Grid>
+
+        {!isMobile && (
+          <Grid item xs={3}>
+            <GamePanel position="right">
+              <Box marginBottom={1}>
+                <Stack direction="row" justifyContent="space-between">
+                  <Typography variant="h6">HP</Typography>
+                  <Timer />
+                </Stack>
+                <HealthPoints />
+              </Box>
+              <Score />
+              <Divider />
+              <GameSettings />
+              <GameButtons />
+            </GamePanel>
+          </Grid>
+        )}
       </Grid>
-      <Tutorial />
+
+      {isMobile ? <></> : <Tutorial />}
     </>
   )
 }

@@ -18,10 +18,13 @@ const guessSlice = createSlice({
     clearGuess: (state) => {
       return ''
     },
+    setGuess: (state, action: PayloadAction<string>) => {
+      return action.payload
+    },
   },
 })
 
-export const { addCurrentGuess, backspaceGuess, clearGuess } =
+export const { addCurrentGuess, backspaceGuess, clearGuess, setGuess } =
   guessSlice.actions
 
 export const selectGuess = (state: RootState) => state.guess
