@@ -15,9 +15,9 @@ This project is not affiliated with The Pokémon Company. It is a fan-made proje
 
 Here's a list of enhancements I'm planning to add to the game:
 
-- [ ] Mobile responsive design: play the game on your phone or tablet.
+- [X] Mobile responsive design: play the game on your phone or tablet.
+- [X] Leaderboards: see who's the best Pokémon guesser around.
 - [ ] Hints: get helpful hints to help you guess the Pokémon.
-- [ ] Leaderboards: see who's the best Pokémon guesser around.
 - [ ] Multiplayer mode: compete with your friends to guess the Pokémon.
 
 Please note that these updates are subject to change, and some are dependent on external APIs and services.
