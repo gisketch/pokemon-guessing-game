@@ -1,6 +1,7 @@
 import { Box, Button, Divider } from '@mui/material'
 import GameSettings from '../features/game/GameSettings'
 import GenerationPicker from '../features/generations/GenerationPicker'
+import SupportMe from './SupportMe'
 
 const MobileNavbar = () => {
   return (
@@ -29,6 +30,7 @@ const MobileNavbar = () => {
       >
         Leaderboard
       </Button>
+      <SupportMe isMobile />
     </Box>
   )
 }

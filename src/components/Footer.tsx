@@ -26,7 +26,12 @@ const Footer = () => {
       <Typography variant="subtitle2" fontWeight={400}>
         Enjoyed the game?{' '}
         <Tooltip title="GCash 09309118777">
-          <a style={{ color: '#6fbf73', fontWeight: 500 }}>Support my work</a>
+          <a
+            href="https://ko-fi.com/gisketch"
+            style={{ color: '#6fbf73', fontWeight: 500 }}
+          >
+            Support my work
+          </a>
         </Tooltip>{' '}
         | Found a bug?{' '}
         <a

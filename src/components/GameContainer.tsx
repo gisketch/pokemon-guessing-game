@@ -13,6 +13,7 @@ import Tutorial from './Tutorial'
 import GameButtons from '../features/game/GameButtons'
 import { selectResponsive } from '../features/responsive/responsiveSlice'
 import Timer from '../features/timer/Timer'
+import SupportMe from './SupportMe'
 
 const GameContainer = () => {
   const gameState = useAppSelector(selectGameState)
@@ -59,7 +60,14 @@ const GameContainer = () => {
         )}
       </Grid>
 
-      {isMobile ? <></> : <Tutorial />}
+      {isMobile ? (
+        <></>
+      ) : (
+        <Stack direction="row" justifyContent="space-between">
+          <Tutorial />
+          <SupportMe />
+        </Stack>
+      )}
     </>
   )
 }
