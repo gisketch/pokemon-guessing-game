@@ -9,6 +9,7 @@ import {
   Stack,
   Tooltip,
   CircularProgress,
+  Button,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { readLeaderboard } from '../services/leaderboardApi'
@@ -26,6 +27,7 @@ import gen8 from '../assets/gen8.png'
 import gen9 from '../assets/gen9.png'
 import { useAppSelector } from '../redux/hooks'
 import { selectResponsive } from '../features/responsive/responsiveSlice'
+import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore'
 
 interface Entry {
   playerData: PlayerData
@@ -33,17 +35,47 @@ interface Entry {
 }
 
 const Leaderboard = () => {
-  const [data, setData] = useState([])
+  const [data, setData] = useState<Entry[]>([])
+  const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<
+    DocumentData,
+    DocumentData
+  > | null>(null)
+  const [hasMore, setHasMore] = useState(true)
+  const [fetchingLeaderboard, setFetchingLeaderboard] = useState(true)
+
   const genIcons = [gen1, gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9]
 
   const isMobile = useAppSelector(selectResponsive).isMobile
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await readLeaderboard()
-      console.log(result)
-      setData(result)
+  const fetchData = async () => {
+    const result = await readLeaderboard(lastDoc).then((res) => {
+      setFetchingLeaderboard(false)
+      return res
+    })
+    setData(result.data)
+    setLastDoc(result.lastVisible)
+  }
+
+  const fetchMoreData = async () => {
+    setFetchingLeaderboard(true)
+
+    if (lastDoc) {
+      const result = await readLeaderboard(lastDoc).then((res) => {
+        setFetchingLeaderboard(false)
+        return res
+      })
+
+      if (result.data.length > 0) {
+        setData([...data, ...result.data])
+        setLastDoc(result.lastVisible)
+      } else {
+        setHasMore(false)
+      }
     }
+  }
+
+  useEffect(() => {
+    setFetchingLeaderboard(true)
     fetchData()
   }, [])
 
@@ -68,69 +100,82 @@ const Leaderboard = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataToMap
-              .sort((a: Entry, b) => b.playerData.score - a.playerData.score)
-              .map((entry: Entry) => {
-                const playerData = entry.playerData
-                return (
-                  <TableRow key={entry.uuid}>
-                    <TableCell>{playerData.name}</TableCell>
-                    <TableCell align="right">
-                      <Stack direction="row" justifyContent="flex-end">
-                        {playerData.generations.map((gen) => {
-                          return (
-                            <Tooltip title={gen} key={gen}>
-                              <div
+            {dataToMap.map((entry: Entry) => {
+              const playerData = entry.playerData
+              return (
+                <TableRow key={entry.uuid}>
+                  <TableCell>{playerData.name}</TableCell>
+                  <TableCell align="right">
+                    <Stack direction="row" justifyContent="flex-end">
+                      {playerData.generations.map((gen) => {
+                        return (
+                          <Tooltip title={gen} key={gen}>
+                            <div
+                              style={{
+                                height: 24,
+                                width: 24,
+                                overflow: 'hidden',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginLeft: 4,
+                              }}
+                            >
+                              <img
                                 style={{
-                                  height: 24,
-                                  width: 24,
-                                  overflow: 'hidden',
-                                  display: 'flex',
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                  marginLeft: 4,
+                                  height: '50px',
                                 }}
-                              >
-                                <img
-                                  style={{
-                                    height: '50px',
-                                  }}
-                                  src={genIcons[Number(gen) - 1]}
-                                />
-                              </div>
-                            </Tooltip>
-                          )
-                        })}
-                      </Stack>
-                    </TableCell>
-                    {!isMobile && (
-                      <>
-                        <TableCell align="right">
-                          {playerData.maxStreak}
-                        </TableCell>
-                        <TableCell align="right">
-                          {playerData.fastestGuess !== undefined
-                            ? prettyMilliseconds(playerData.fastestGuess)
-                            : ''}
-                        </TableCell>
-                        <TableCell align="right">
-                          {playerData.guesses}
-                        </TableCell>
-                      </>
-                    )}
-                    <TableCell align="right">{playerData.score}</TableCell>
-                  </TableRow>
-                )
-              })}
+                                src={genIcons[Number(gen) - 1]}
+                              />
+                            </div>
+                          </Tooltip>
+                        )
+                      })}
+                    </Stack>
+                  </TableCell>
+                  {!isMobile && (
+                    <>
+                      <TableCell align="right">
+                        {playerData.maxStreak}
+                      </TableCell>
+                      <TableCell align="right">
+                        {playerData.fastestGuess !== undefined
+                          ? prettyMilliseconds(playerData.fastestGuess)
+                          : ''}
+                      </TableCell>
+                      <TableCell align="right">{playerData.guesses}</TableCell>
+                    </>
+                  )}
+                  <TableCell align="right">{playerData.score}</TableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
       </TableContainer>
-      {data.length === 0 && (
-        <Stack direction="column" alignItems="center" padding={4} gap={2}>
-          <CircularProgress />
-          Fetching leaderboard
-        </Stack>
-      )}
+      <Button
+        variant="outlined"
+        color="secondary"
+        size="small"
+        sx={{ marginTop: 2 }}
+        disabled={!hasMore || fetchingLeaderboard}
+        onClick={fetchMoreData}
+      >
+        {fetchingLeaderboard ? (
+          <>
+            Fetching Leaderboard
+            <CircularProgress
+              size={12}
+              color="secondary"
+              sx={{ marginLeft: 2 }}
+            />
+          </>
+        ) : hasMore ? (
+          'Load More'
+        ) : (
+          "You've reached the end"
+        )}
+      </Button>
     </>
   )
 }

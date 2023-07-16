@@ -9,7 +9,7 @@ import {
 import BlurBackground from '../components/BlurBackground'
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import { useAppDispatch } from '../redux/hooks'
 import { useEffect } from 'react'
 import { setIsMobile } from '../features/responsive/responsiveSlice'
@@ -25,6 +25,7 @@ const theme = createTheme({
 
 const RootLayout = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const location = useLocation().pathname
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const RootLayout = () => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          overflow: 'hidden',
+          overflow: location === '/' ? 'hidden' : 'auto',
         }}
       >
         <div>
