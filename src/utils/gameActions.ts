@@ -38,12 +38,12 @@ export const startPokemonGame = (dispatch: any) => {
 }
 
 export const resetGame = (dispatch: any) => {
+  dispatch(resetAll())
   dispatch(setGameOver(false))
   const generations = store.getState().gameQueue.generations
   dispatch(setPokemonIdsFromGens(generations))
   dispatch(setRandomId())
   dispatch(clearPokemon())
-  dispatch(resetAll())
   dispatch(clearGuess())
 }
 

@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -8,8 +9,10 @@ import {
   Divider,
   Input,
   Stack,
+  Typography,
 } from '@mui/material'
 import {
+  completeGame,
   selectGameState,
   setGameOver,
 } from '../features/gameState/gameStateSlice'
@@ -20,15 +23,23 @@ import { useEffect, useState } from 'react'
 import { selectGameQueue } from '../features/game/gameQueueSlice'
 import { writeToLeaderboard } from '../services/leaderboardApi'
 import { PlayerData } from '../utils/types'
+import { selectPokemonIds } from '../features/pokemon/pokemonIdsSlice'
 
 const GameOverOverlay = () => {
   const dispatch = useAppDispatch()
   const gameState = useAppSelector(selectGameState)
   const generations = useAppSelector(selectGameQueue).generations
 
+  const totalPokemonsToGuess =
+    useAppSelector(selectPokemonIds).pokemonIds.length
+
   const [leaderboardPrompt, setLeaderboardPrompt] = useState(false)
+  const [sendingData, setSendingData] = useState(false)
+  const [sentPrompt, setSentPrompt] = useState(false)
+  const [sentMessage, setSentMessage] = useState('')
 
   const isGameOver = gameState.isGameOver
+  const gameCompleted = gameState.completed
 
   const [name, setName] = useState('')
 
@@ -38,8 +49,19 @@ const GameOverOverlay = () => {
     }
   }, [gameState.hp])
 
+  useEffect(() => {
+    if (gameState.guesses >= totalPokemonsToGuess) {
+      dispatch(setGameOver(true))
+      dispatch(completeGame())
+    }
+  }, [gameState.guesses])
+
   const handleJoinLeaderboard = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
+    setLeaderboardPrompt(false)
+    setSendingData(true)
+    setSentPrompt(true)
 
     const playerData: PlayerData = {
       name: name,
@@ -50,27 +72,64 @@ const GameOverOverlay = () => {
       maxStreak: gameState.max.streak,
       fastestGuess:
         gameState.max.timeGuessed === Infinity
-          ? undefined
+          ? 60_000
           : gameState.max.timeGuessed,
     }
 
-    writeToLeaderboard(playerData)
+    console.log('Writing to leaderboard')
 
-    resetGame(dispatch)
-    setLeaderboardPrompt(false)
+    writeToLeaderboard(playerData)
+      .then(() => {
+        setSentMessage('Score submitted!')
+        setSendingData(false)
+        resetGame(dispatch)
+        setTimeout(() => {
+          console.log('Wrote to leaderboard')
+          setSentPrompt(false)
+        }, 1000)
+      })
+      .catch(() => {
+        console.log('Error')
+        setSendingData(false)
+        setSentPrompt(false)
+        setSentMessage('An unexpected error occured :<')
+        resetGame(dispatch)
+      })
   }
 
   return (
     <>
+      <Dialog open={sentPrompt}>
+        <DialogTitle sx={{ background: 'black' }}>
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            gap={1}
+          >
+            {sendingData && <CircularProgress size={18} color="inherit" />}
+            <Typography variant="body1">
+              {sendingData
+                ? 'Be patient, Trainer! Your score is on its way to the leaderboard...'
+                : sentMessage}
+            </Typography>
+          </Stack>
+        </DialogTitle>
+      </Dialog>
       <Dialog
-        open={isGameOver}
+        open={isGameOver || gameCompleted}
         // onClose={(handleClose)}
       >
-        <DialogTitle sx={{ background: 'black' }}>Game over</DialogTitle>
+        <DialogTitle sx={{ background: 'black' }}>
+          {isGameOver && gameCompleted
+            ? 'Congratulations, Pokémon Master!'
+            : 'Game over'}
+        </DialogTitle>
         <DialogContent sx={{ background: 'black' }}>
           <DialogContentText>
-            Wow, what a game! You're out of Poké Balls now, but here's how you
-            did:
+            {isGameOver && gameCompleted
+              ? "Incredible! You've caught them all! Here's a look at your amazing stats:"
+              : "Wow, what a game! You're out of Poké Balls now, but here's how you did:"}
           </DialogContentText>
           <Stack sx={{ marginBlock: 2 }}>
             <span>

@@ -73,6 +73,7 @@ const Leaderboard = () => {
     })
     setData(result.data)
     setLastDoc(result.lastVisible)
+    console.log(result.data)
   }
 
   const fetchMoreData = async () => {

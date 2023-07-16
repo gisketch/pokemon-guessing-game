@@ -3,6 +3,7 @@ import { RootState } from '../../redux/store'
 
 type SliceState = {
   initialized: boolean
+  completed: boolean
   isGameOver: boolean
   hp: number
   difficulty: 'easy' | 'medium' | 'hard'
@@ -26,6 +27,7 @@ type SliceState = {
 
 const initialState: SliceState = {
   initialized: false,
+  completed: false,
   isGameOver: false,
   hp: 6,
   difficulty: 'medium',
@@ -97,6 +99,7 @@ const gameStateSlice = createSlice({
     resetAll: (state) => {
       return {
         ...initialState,
+        completed: false,
         difficulty: state.difficulty,
         startTime: new Date().getTime(),
       }
@@ -119,6 +122,9 @@ const gameStateSlice = createSlice({
     ) => {
       state.difficulty = action.payload
     },
+    completeGame: (state) => {
+      state.completed = true
+    },
   },
 })
 
@@ -133,6 +139,7 @@ export const {
   startGame,
   setGameOver,
   setDifficulty,
+  completeGame,
 } = gameStateSlice.actions
 
 export const selectGameState = (state: RootState) => state.gameState

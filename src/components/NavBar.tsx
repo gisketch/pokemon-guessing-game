@@ -22,8 +22,8 @@ const NavBar = () => {
   const isMobile = useAppSelector(selectResponsive).isMobile
 
   const playAgain = () => {
-    resetGame(dispatch)
     navigate('/')
+    resetGame(dispatch)
   }
 
   return (

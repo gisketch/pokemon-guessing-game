@@ -55,20 +55,25 @@ const pokemonIdsSlice = createSlice({
       })
       return {
         ...state,
-        pokemonIds: [...selectedGenIds],
-        // pokemonIds: ['1', '2', '3'],
+        // pokemonIds: [...selectedGenIds],
+        pokemonIds: ['1'],
       }
     },
     setRandomId: (state) => {
       const pokemonToGuess = state.pokemonIds.filter(
         (id) => !state.guessedIds.includes(id)
       )
-      const randomIndex = Math.floor(Math.random() * pokemonToGuess.length)
-      const newId = pokemonToGuess[randomIndex].toString()
-      return {
-        ...state,
-        currentId: newId,
+
+      if (pokemonToGuess.length > 0) {
+        const randomIndex = Math.floor(Math.random() * pokemonToGuess.length)
+        const newId = pokemonToGuess[randomIndex].toString()
+        return {
+          ...state,
+          currentId: newId,
+        }
       }
+
+      return state
     },
     excludeGuessedId: (state, action: PayloadAction<string>) => {
       return {
