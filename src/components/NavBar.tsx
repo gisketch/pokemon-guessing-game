@@ -7,16 +7,24 @@ import { useAppSelector } from '../redux/hooks'
 import { selectResponsive } from '../features/responsive/responsiveSlice'
 import MobileNavbar from './MobileNavbar'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { resetGame } from '../utils/gameActions'
 
 const NavBar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   const navigate = useNavigate()
   const location = useLocation()
+  const dispatch = useDispatch()
 
   const isHome = location.pathname === '/'
 
   const isMobile = useAppSelector(selectResponsive).isMobile
+
+  const playAgain = () => {
+    resetGame(dispatch)
+    navigate('/')
+  }
 
   return (
     <Container maxWidth="xl">
@@ -64,7 +72,7 @@ const NavBar = () => {
               ) : (
                 <Button
                   sx={{ color: 'white', borderColor: '#FFFFFF88', padding: 0 }}
-                  onClick={() => setDrawerOpen(true)}
+                  onClick={playAgain}
                 >
                   <Menu />
                 </Button>
@@ -75,7 +83,7 @@ const NavBar = () => {
               direction="row"
               alignItems="center"
               gap={1}
-              onClick={() => navigate('/')}
+              onClick={playAgain}
             >
               <Typography variant="h6">Play Again</Typography>
             </Stack>

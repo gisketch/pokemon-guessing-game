@@ -55,8 +55,8 @@ const pokemonIdsSlice = createSlice({
       })
       return {
         ...state,
-        pokemonIds: [...selectedGenIds],
-        // pokemonIds: ['1', '2', '3'],
+        // pokemonIds: [...selectedGenIds],
+        pokemonIds: ['1', '2', '3'],
       }
     },
     setRandomId: (state) => {
