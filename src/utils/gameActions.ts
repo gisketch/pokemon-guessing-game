@@ -13,12 +13,14 @@ import {
   resetStreak,
   setGameOver,
   setProgress,
+  setStartTime,
   startGame,
 } from '../features/gameState/gameStateSlice'
 import { store } from '../redux/store'
 
 const changePokemon = (dispatch: any) => {
   dispatch(setProgress(0))
+  dispatch(setStartTime())
   dispatch(clearPokemon())
   dispatch(clearGuess())
   dispatch(setRandomId())

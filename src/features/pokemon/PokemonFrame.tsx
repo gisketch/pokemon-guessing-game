@@ -19,12 +19,6 @@ const PokemonFrame = () => {
   const maskRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (pokemon.name !== '') {
-      dispatch(setStartTime())
-    }
-  }, [pokemon.name])
-
-  useEffect(() => {
     const containerElement = containerRef.current
     const maskElement = maskRef.current
 
@@ -76,6 +70,9 @@ const PokemonFrame = () => {
         <img
           src={pokemonImage}
           height={300}
+          onLoad={() => {
+            dispatch(setStartTime())
+          }}
           style={{
             filter: currentDifficulty === 'easy' ? '' : 'brightness(0%)',
             position: 'absolute',
