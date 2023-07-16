@@ -183,6 +183,7 @@ const GameOverOverlay = () => {
         <form onSubmit={handleJoinLeaderboard}>
           <DialogContent sx={{ background: 'black' }}>
             <Input
+              autoFocus
               placeholder="Trainer Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -197,7 +198,7 @@ const GameOverOverlay = () => {
             >
               Cancel
             </Button>
-            <Button type="submit" variant="outlined" color="success" autoFocus>
+            <Button type="submit" variant="outlined" color="success">
               Join
             </Button>
           </DialogActions>

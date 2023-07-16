@@ -62,17 +62,15 @@ const NavBar = () => {
           {isMobile ? (
             <>
               {!isHome ? (
-                <Button
-                  variant="outlined"
-                  color="success"
-                  onClick={() => navigate('/')}
-                >
+                <Button variant="outlined" color="success" onClick={playAgain}>
                   Play Again
                 </Button>
               ) : (
                 <Button
+                  variant="outlined"
+                  color="inherit"
                   sx={{ color: 'white', borderColor: '#FFFFFF88', padding: 0 }}
-                  onClick={playAgain}
+                  onClick={() => setDrawerOpen(true)}
                 >
                   <Menu />
                 </Button>
