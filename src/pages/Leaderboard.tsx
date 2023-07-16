@@ -10,6 +10,8 @@ import {
   Tooltip,
   CircularProgress,
   Button,
+  ToggleButton,
+  ToggleButtonGroup,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { readLeaderboard } from '../services/leaderboardApi'
@@ -42,6 +44,23 @@ const Leaderboard = () => {
   > | null>(null)
   const [hasMore, setHasMore] = useState(true)
   const [fetchingLeaderboard, setFetchingLeaderboard] = useState(true)
+
+  const [diffFilter, setDiffFilter] = useState<string[]>([
+    'easy',
+    'medium',
+    'hard',
+  ])
+
+  const handleDiffFilter = (
+    event: React.MouseEvent<HTMLElement>,
+    diff: string[]
+  ) => {
+    if (diff.length === 0) {
+      //Do nothing
+    } else {
+      setDiffFilter(diff)
+    }
+  }
 
   const genIcons = [gen1, gen2, gen3, gen4, gen5, gen6, gen7, gen8, gen9]
 
@@ -79,14 +98,43 @@ const Leaderboard = () => {
     fetchData()
   }, [])
 
-  const dataToMap: Entry[] = Object.values(data || {})
+  useEffect(() => {
+    if (
+      data.filter((entry: Entry) =>
+        diffFilter.includes(entry.playerData.difficulty)
+      ).length < 10
+    ) {
+      fetchMoreData()
+    }
+  }, [diffFilter, data])
+
+  const dataToMap: Entry[] = Object.values(data || {}).filter((entry: Entry) =>
+    diffFilter.includes(entry.playerData.difficulty)
+  )
 
   return (
     <>
+      <ToggleButtonGroup
+        orientation="horizontal"
+        size="small"
+        value={diffFilter}
+        onChange={handleDiffFilter}
+      >
+        <ToggleButton value="easy" color="success">
+          Easy
+        </ToggleButton>
+        <ToggleButton value="medium" color="warning">
+          Medium
+        </ToggleButton>
+        <ToggleButton value="hard" color="error">
+          Hard
+        </ToggleButton>
+      </ToggleButtonGroup>
       <TableContainer component={Box}>
         <Table sx={{ minWidth: 200 }} aria-label="simple table">
           <TableHead>
             <TableRow>
+              <TableCell>#</TableCell>
               <TableCell>Name</TableCell>
               <TableCell align="right">Generations</TableCell>
               {!isMobile && (
@@ -100,14 +148,41 @@ const Leaderboard = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataToMap.map((entry: Entry) => {
+            {dataToMap.map((entry: Entry, index: number) => {
               const playerData = entry.playerData
+              let style = {}
+
+              switch (index + 1) {
+                case 1: // First Place
+                  style = {
+                    fontWeight: 600,
+                    textShadow: '0 0 5px gold, 0 0 10px gold',
+                  }
+                  break
+                case 2: // Second Place
+                  style = {
+                    fontWeight: 600,
+                    textShadow: '0 0 5px #FFFFFFAA, 0 0 10px #FFFFFF44',
+                  }
+                  break
+                case 3: // Third Place
+                  style = {
+                    fontWeight: 600,
+                    textShadow: '0 0 5px #FFD700AA, 0 0 10px #FFD70044',
+                  }
+                  break
+                default:
+                  style = {}
+                  break
+              }
+
               return (
                 <TableRow key={entry.uuid}>
-                  <TableCell>{playerData.name}</TableCell>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell sx={style}>{playerData.name}</TableCell>
                   <TableCell align="right">
                     <Stack direction="row" justifyContent="flex-end">
-                      {playerData.generations.map((gen) => {
+                      {playerData.generations.sort().map((gen) => {
                         return (
                           <Tooltip title={gen} key={gen}>
                             <div
