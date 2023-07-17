@@ -1,4 +1,4 @@
-import { Favorite } from '@mui/icons-material'
+import { Favorite, People } from '@mui/icons-material'
 import { Button, Stack, Typography } from '@mui/material'
 
 interface Props {
@@ -20,9 +20,19 @@ const SupportMe = ({ isMobile = false }: Props) => {
         variant="outlined"
         size="small"
         href="https://ko-fi.com/gisketch"
+        sx={{ marginBottom: 1 }}
       >
         <Favorite sx={{ fontSize: 14, marginRight: 1 }} />
         Support Me
+      </Button>
+      <Button
+        color="primary"
+        variant="outlined"
+        size="small"
+        href="https://discord.gg/JcCeAD7DAy"
+      >
+        <People sx={{ fontSize: 14, marginRight: 1 }} />
+        Join the Discord
       </Button>
       <Typography variant="body1" fontSize={14} marginTop={1}>
         GCash 0930 911 8777
