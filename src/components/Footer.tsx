@@ -35,7 +35,7 @@ const Footer = () => {
         </Tooltip>{' '}
         | Found a bug?{' '}
         <a
-          href="mailto:dev@gisketch.com"
+          href="https://discord.gg/JcCeAD7DAy"
           style={{ color: '#aa2e25', fontWeight: 500 }}
         >
           Report it here
