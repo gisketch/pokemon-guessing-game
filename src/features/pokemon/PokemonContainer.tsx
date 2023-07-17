@@ -67,6 +67,7 @@ const PokemonContainer = () => {
             (event.keyCode >= 65 && event.keyCode <= 90) || // Alphabet keys (A-Z)
             (event.keyCode >= 48 && event.keyCode <= 57) || // Numeric keys (0-9)
             event.keyCode === 32 || // Spacebar
+            event.keyCode === 59 || // Colon
             event.key === 'Backspace' || // Backspace key
             event.key === 'Delete' || // Delete key
             event.key === 'Tab' || //Period
