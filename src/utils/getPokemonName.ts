@@ -7838,6 +7838,8 @@ const pokemonNames = [
   ],
   [
     'Sirfetch\u2019d',
+    'Sirfetchd',
+    "Sirfetch'd",
     '\u8471\u6e38\u5175',
     'Palarticho',
     '\ucc3d\ud30c\ub098\uc774\ud2b8',
