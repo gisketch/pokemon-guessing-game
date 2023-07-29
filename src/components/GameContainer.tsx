@@ -14,6 +14,7 @@ import GameButtons from '../features/game/GameButtons'
 import { selectResponsive } from '../features/responsive/responsiveSlice'
 import Timer from '../features/timer/Timer'
 import SupportMe from './SupportMe'
+import UpdatesPanel from './UpdatesPanel'
 
 const GameContainer = () => {
   const gameState = useAppSelector(selectGameState)
@@ -68,6 +69,8 @@ const GameContainer = () => {
           <SupportMe />
         </Stack>
       )}
+
+      <UpdatesPanel />
     </>
   )
 }

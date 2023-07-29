@@ -9,7 +9,7 @@ const Timer = () => {
   const hp = useAppSelector(selectGameState).hp
   const startTime = useAppSelector(selectGameState).startTime
   const difficulty = useAppSelector(selectGameState).difficulty
-  const currentPokemon = useAppSelector(selectPokemon).name
+  const currentPokemon = useAppSelector(selectPokemon).names
 
   const [remainingTime, setRemainingTime] = useState(15_000)
 
@@ -18,7 +18,7 @@ const Timer = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (!currentPokemon) return
+    if (currentPokemon.length === 0) return
 
     if (difficulty !== 'easy') {
       const intervalId = setInterval(() => {

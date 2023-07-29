@@ -13,7 +13,7 @@ export const pokemonApi = createApi({
       transformResponse: (res: any): Pokemon => {
         return {
           id: res.id,
-          name: getPokemonName(res.id),
+          names: getPokemonName(res.id),
           image:
             res.id >= 906
               ? res.sprites.other['official-artwork'].front_default

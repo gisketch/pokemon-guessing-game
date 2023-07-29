@@ -10,7 +10,7 @@ const GameButtons = () => {
   const currentPokemon = useAppSelector(selectPokemon)
 
   const handleSkip = () => {
-    if (currentPokemon.name) skipPokemon(dispatch)
+    if (currentPokemon.names.length !== 0) skipPokemon(dispatch)
   }
   return (
     <ButtonGroup variant="outlined" fullWidth>

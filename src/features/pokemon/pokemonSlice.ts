@@ -5,12 +5,12 @@ import { RootState } from '../../redux/store'
 type SliceState = {
   pokemon: {
     id: string
-    name: string
+    names: string[]
     image: string
   }
 }
 
-const initialState: SliceState = { pokemon: { id: '', name: '', image: '' } }
+const initialState: SliceState = { pokemon: { id: '', names: [], image: '' } }
 
 const pokemonSlice = createSlice({
   name: 'pokemon',

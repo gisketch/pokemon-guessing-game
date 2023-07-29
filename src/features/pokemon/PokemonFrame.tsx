@@ -44,7 +44,7 @@ const PokemonFrame = () => {
         alignItems: 'center',
       }}
     >
-      {pokemon.name === '' ? (
+      {pokemon.names.length === 0 ? (
         <motion.img
           src={pokeball}
           height={125}

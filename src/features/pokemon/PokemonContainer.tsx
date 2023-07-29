@@ -106,17 +106,26 @@ const PokemonContainer = () => {
   }, [isMobile])
 
   useEffect(() => {
-    let progress = 0
-    const pokemonName = currentPokemon.name
-    const minLength = Math.min(currentGuess.length, pokemonName.length)
+    let maxProgress = 0
+    let pokemonName = ''
 
-    for (let i = 0; i < minLength; i++) {
-      if (currentGuess[i].toLowerCase() === pokemonName[i].toLowerCase()) {
-        progress++
-      } else {
-        break
+    currentPokemon.names.forEach((name) => {
+      let progress = 0
+      const minLength = Math.min(currentGuess.length, name.length)
+
+      for (let i = 0; i < minLength; i++) {
+        if (currentGuess[i].toLowerCase() === name[i].toLowerCase()) {
+          progress++
+        } else {
+          break
+        }
       }
-    }
+
+      if (progress / name.length > maxProgress) {
+        maxProgress = progress / name.length
+        pokemonName = name
+      }
+    })
 
     //Animate
     pokeFrameControls.start({
@@ -127,7 +136,7 @@ const PokemonContainer = () => {
       },
     })
 
-    dispatch(setProgress(progress / pokemonName.length))
+    dispatch(setProgress(maxProgress))
   }, [currentGuess])
 
   useEffect(() => {
@@ -137,7 +146,11 @@ const PokemonContainer = () => {
   }, [data, dispatch])
 
   const handleAnswer = () => {
-    if (currentGuess.toLowerCase() === currentPokemon.name.toLowerCase()) {
+    if (
+      currentPokemon.names
+        .map((name) => name.toLowerCase())
+        .includes(currentGuess.toLowerCase())
+    ) {
       animControls.start({
         scale: [1, 1.25, 1],
         color: ['rgb(24,150,24)', 'rgb(255,255,255)'],
@@ -204,7 +217,7 @@ const PokemonContainer = () => {
               variant="outlined"
               color="error"
               onClick={() => {
-                if (currentPokemon.name !== '') skipPokemon(dispatch)
+                if (currentPokemon.names.length !== 0) skipPokemon(dispatch)
               }}
             >
               SKIP
