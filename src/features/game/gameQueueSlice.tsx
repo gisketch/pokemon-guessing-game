@@ -8,7 +8,7 @@ type SliceState = {
 
 const initialState: SliceState = {
   difficulty: 'medium',
-  generations: ['1', '2', '3'],
+  generations: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
 }
 
 const gameQueueSlice = createSlice({

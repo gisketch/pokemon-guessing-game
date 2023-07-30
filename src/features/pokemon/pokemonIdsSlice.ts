@@ -19,7 +19,9 @@ type SliceState = {
 
 const initialState: SliceState = {
   currentId: '1',
-  pokemonIds: Array.from({ length: 386 }, (_, index) => (index + 1).toString()),
+  pokemonIds: Array.from({ length: 1010 }, (_, index) =>
+    (index + 1).toString()
+  ),
   guessedIds: [],
 }
 
