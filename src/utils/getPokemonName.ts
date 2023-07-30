@@ -707,7 +707,8 @@ const pokemonNames = [
     'Magn\u00e9ton',
   ],
   [
-    'Farfetch\u2019d',
+    "Farfetch'd",
+    'Farfetchd',
     '\u5927\u8525\u9d28',
     'Porenta',
     '\u5927\u8471\u9e2d',
@@ -2047,6 +2048,7 @@ const pokemonNames = [
   ],
   [
     'Porygon2',
+    'Porygon 2',
     '\ud3f4\ub9ac\uace42',
     '\u30dd\u30ea\u30b4\u30f3\uff12',
     '\u591a\u8fb9\u517d\uff12\u578b',
